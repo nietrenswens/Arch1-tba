@@ -4,6 +4,7 @@ Noah en Rens Mulder
 """
 from objects.location import Location
 from objects.item import Item
+import eventsmanager
 
 # Hier worden de belangrijke variabelen voor de game aangemaakt
 locations = []
@@ -16,6 +17,7 @@ commands = []
 def register_locations():
     """Dit registreert de locaties van de game"""
     register_location("start", "Hey ho")
+    register_location("test", "Ho ho")
 
 def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
@@ -31,7 +33,14 @@ def register_global_commands():
     register_global_command("oost", lambda: move("oost"), ["o", "east"])
     register_global_command("zuid", lambda: move("south"), ["z", "south"])
     register_global_command("west", lambda: move("west"), ["w", "west"])
-    
+
+def register_events():
+    eventsmanager.register_event(location='all', condition='location.getName() != "start" and ' + str(has("zuurstoftank")), function=lambda: eventsmanager.end_game_bad("Je kreeg geen zuurstof meer en stierf een pijnlijke dood."))
+
+def getInventory():
+    """Dit geeft de inventory"""
+    return inventory
+
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
     if(len(inventory) == 0):
@@ -39,7 +48,7 @@ def check_inventory():
     else:
         print("Je hebt de volgende items in je inventory:")
         for item in inventory:
-            print(item)
+            print(item.getName())
 
 def pak(item):
     """Dit pakt een item op"""
@@ -52,6 +61,14 @@ def pak(item):
     else:
         print("Je kan dit item niet oppakken.")
 
+def has(itemname):
+    global inventory
+    for item in inventory:
+        print(item.getName())
+        if item.getName() == itemname:
+            return True
+    return False
+
 # Hier komt grotendeels de game logica
 def prepare_all_locations():
     """Dit voert alle voorbereidende opdrachten uit voor alle locaties"""
@@ -62,6 +79,7 @@ def prepare_all_locations():
 #prepare locations
 def prepare_start():
     start = get_location("start")
+    start.setSouth(get_location("test"))
     start.addItem(Item("zuurstoftank", "Een zuurstoftank met ongeveer 50% capaciteit."))
     for item in start.items:
         register_command(start, "pak " + item.getName(), lambda: pak(item), ["p " + item.getName(), "pak " + item.getName(), "pick up " + item.getName()])
@@ -77,28 +95,28 @@ def move(direction):
     """Dit verplaatst de speler naar een andere locatie"""
     global location
     if direction == "noord":
-        loc = get_location(location.getNorth())
+        loc = location.getNorth()
         if loc == None:
             print("Je kan niet naar het noorden.")
         else:
             location = loc 
             print("Je gaat naar het noorden...")
     elif direction == "oost":
-        loc = get_location(location.getEast())
+        loc = location.getEast()
         if loc == None:
             print("Je kan niet naar het oosten.")
         else: 
             location = loc 
             print("Je gaat naar het oosten...")
     elif direction == "south":
-        loc = get_location(location.getSouth())
+        loc = location.getSouth()
         if loc == None:
             print("Je kan niet naar het zuiden.")
         else: 
             location = loc 
             print("Je gaat naar het zuiden...")
     elif direction == "west":
-        loc = get_location(location.getWest())
+        loc = location.getWest()
         if loc == None:
             print("Je kan niet naar het westen.")
         else: 
@@ -132,6 +150,7 @@ def gameloop():
     """Dit is de gameloop van de game"""
     while True:
         global location
+        eventsmanager.check_events(location)
         location.printDescription()
         valid = False
         while not valid:
@@ -170,6 +189,7 @@ def main():
     register_locations()
     prepare_all_locations()
     register_global_commands()
+    register_events()
     prepgame()
     # print(locations[0].getName())
     gameloop()
