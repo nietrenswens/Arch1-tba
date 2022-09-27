@@ -63,6 +63,6 @@ class Location:
     def getName(self):
         return self.name
 
-    def addCommand(self, name, aliases, type, description, function):
-        self.commands.append({"name": name, "type": type, "aliases": aliases,"description": description, "function": function})
+    def addCommand(self, name, aliases, function):
+        self.commands.append({"name": name, "aliases": aliases, "function": function})
 
