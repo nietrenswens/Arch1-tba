@@ -16,6 +16,7 @@ commands = []
 def register_locations():
     """Dit registreert de locaties van de game"""
     register_location("start", "Hey ho")
+    register_
 
 def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
