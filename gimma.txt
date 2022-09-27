@@ -1,0 +1,89 @@
+locaties:
+
+
+Top:
+"Je wordt wakker op een onbekende plek. Je bent omringd door wolken en krijgt het gevoel dat je niet kan ademen... Je zicht voelt wazig..."
+-kijk-
+"Naast je ligt een zuurstoftank."
+1 Pak hem op
+1 "Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp waardoor je nu een parachute naast je ziet liggen.
+Hij ziet er niet al te best uit..."
+- Pak de parachute op
+- Je hebt geen zin om dit mee te sjouwen, je laat hem liggen
+WAARHEEN
+
+
+- Zuurstof is voor zwakkelingen
+"Je beeld wordt steeds waziger en je voelt je ineens heel slaperig. GAME OVER"
+
+- 
+
+
+Klif:
+"Je loopt een stukje verder, maar het pad lijkt hier abrupt te stoppen"
+"Je kijkt naar beneden. Het is te hoog om de grond te zien."
+"Op de rand van de klif ligt een vis.. Je hebt best honger en probeert hem op te pakken."
+"De vis flopt uit je handen de klif af."
+"De vis brengt je spontaan op een idee..."
+"Je trekt de parachute uit je tas"
+- Spring
+"Je telt tot 3 en springt van de berg af."
+"Je springt en ziet pas in de lucht een enorm gat in de parachute. In plaats van te zweven donder je als een steen van de berg af. GAME OVER." 
+
+
+- Stop de parachute terug in je tas
+"Dit lijkt geen slim idee... Misschien eerst even verder onderzoeken."
+"In je ooghoek zie je een glimmende groene steen... Het lijkt bijna alsof hij je roept."
+- Neem de steen mee
+- Laat de steen liggen
+WAARHEEN
+
+Bostop:
+"Je loopt een bos in. Het is donker maar iets verderop hoor je een vreemd gehuil...."
+"Je loopt verder... Het gehuil wordt steeds luider."
+"Achter een gigantische steen ligt een gestrande walvis."
+"Walvis: ..... h .. eeel p..... 
+...
+..  please ...... make it stop...."
+- Verlos de walvis uit zijn leiden
+"Je ziet een grote scherpe tak liggen. Je neemt de tak in je hand en steekt de walvis in zijn hart..."
+"Het gehuil van de walvis sterft langzaam uit."
+"Je ziet iets glinsteren in de borstkas van de walvis.. Je steekt je hand erin en haalt een gouden sleutel tevoorschijn."
+"Je stopt de sleutel in je zak."
+WAARHEEN
+- Geef de walvis een schop
+"De walvis begint harder te huilen..."
+WAARHEEN
+
+
+
+Klifhuis:
+"Iets verderop zie je een kleine chalet staan."
+"'Dit zou het echt goed doen op AirBnB', denk je bij jezelf"
+"Je opent de deur..."
+"De hele chalet staat leeg op één ding na."
+"Op een tafel in de hoek ligt een dikke jonko..."
+- Smoke
+"Naast de jonko ligt een verroestte Zippo.. je lit 'm en voelt de stress je lichaam verlaten."
+"Je bent in lange tijden niet zo skaff geweest... met rode ogen en een zwaar hoofd verlaat je de chalet."
+WAARHEEN
+
+- Drugs are bad
+"Dit is niks voor mij... je verlaat telerugesteld de chalet"
+WAARHEEN
+
+Bostop
+
+
+items:
+zuurstof tank masker
+vis
+parachute
+sleutel uit walvis
+bacardi lemon
+albert heijn tas
+steen
+mobiel
+rekenmachine
+jonko
+
