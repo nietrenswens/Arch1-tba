@@ -24,6 +24,7 @@ class Location:
         self.south = ''
         self.west = ''
         self.commands = []
+        self.items = []
         if name == 'start':
             print("Je bent in de startkamer. Je ziet een deur naar het noorden en een deur naar het oosten.")
 
@@ -66,3 +67,13 @@ class Location:
     def addCommand(self, name, aliases, function):
         self.commands.append({"name": name, "aliases": aliases, "function": function})
 
+    def addItem(self, item):
+        self.items.append(item)
+    
+    def removeItem(self, item):
+        self.items.remove(item)
+
+    def removeCommand(self, commandName):
+        for command in self.commands:
+            if command["name"] == commandName:
+                self.commands.remove(command)

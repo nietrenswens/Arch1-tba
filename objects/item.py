@@ -16,6 +16,12 @@ class Item:
     info(additional=""):
         Prints the person's name and age.
     """
-    def __init__(self, name, equippable):
+    def __init__(self, name, description):
         self.name = name
-        self.equippable = equippable
+        self.description = description
+
+    def info(self):
+        print(self.description)
+
+    def getName(self):
+        return self.name
