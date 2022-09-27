@@ -16,7 +16,6 @@ commands = []
 def register_locations():
     """Dit registreert de locaties van de game"""
     register_location("start", "Hey ho")
-    register_
 
 def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
@@ -28,6 +27,10 @@ def register_global_command(name, function, aliases=[]):
 
 def register_global_commands():
     register_global_command("inventory", check_inventory, ["i", "inv", "inventaris"])
+    register_global_command("noord", lambda: move("noord"), ["n", "north"])
+    register_global_command("oost", lambda: move("oost"), ["o", "east"])
+    register_global_command("zuid", lambda: move("south"), ["z", "south"])
+    register_global_command("west", lambda: move("west"), ["w", "west"])
     
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
@@ -53,12 +56,15 @@ def pak(item):
 def prepare_all_locations():
     """Dit voert alle voorbereidende opdrachten uit voor alle locaties"""
 
+    prepare_start()
+
+
+#prepare locations
+def prepare_start():
     start = get_location("start")
     start.addItem(Item("zuurstoftank", "Een zuurstoftank met ongeveer 50% capaciteit."))
-    register_command(start, "noord", lambda: move("noord"), ["n", "north"])
     for item in start.items:
         register_command(start, "pak " + item.getName(), lambda: pak(item), ["p " + item.getName(), "pak " + item.getName(), "pick up " + item.getName()])
-    # register_command(start, "pak zuurstoftank", lambda: )
 
 def examine(item):
     """Dit onderzoekt een item"""
@@ -71,17 +77,33 @@ def move(direction):
     """Dit verplaatst de speler naar een andere locatie"""
     global location
     if direction == "noord":
-        location = get_location(location.getNorth())
-        print("Je gaat naar het noorden...")
+        loc = get_location(location.getNorth())
+        if loc == None:
+            print("Je kan niet naar het noorden.")
+        else:
+            location = loc 
+            print("Je gaat naar het noorden...")
     elif direction == "oost":
-        location = get_location(location.getEast())
-        print("Je gaat naar het oosten...")
-    elif direction == "zuid":
-        location = get_location(location.getSouth())
-        print("Je gaat naar het zuiden...")
+        loc = get_location(location.getEast())
+        if loc == None:
+            print("Je kan niet naar het oosten.")
+        else: 
+            location = loc 
+            print("Je gaat naar het oosten...")
+    elif direction == "south":
+        loc = get_location(location.getSouth())
+        if loc == None:
+            print("Je kan niet naar het zuiden.")
+        else: 
+            location = loc 
+            print("Je gaat naar het zuiden...")
     elif direction == "west":
-        location = get_location(location.getWest())
-        print("Je gaat naar het westen...")
+        loc = get_location(location.getWest())
+        if loc == None:
+            print("Je kan niet naar het westen.")
+        else: 
+            location = loc 
+            print("Je gaat naar het westen...")
 
 def register_location(name, description):
     """Dit registreert een locatie"""
