@@ -16,14 +16,14 @@ class Location:
     printDescription(additional=""):
         Prints the person's name and age.
     """
-    def __init__(self, name, description, commands):
+    def __init__(self, name, description):
         self.name = name
         self.description = description
         self.north = ''
         self.east = ''
         self.south = ''
         self.west = ''
-        self.commands = commands
+        self.commands = []
         if name == 'start':
             print("Je bent in de startkamer. Je ziet een deur naar het noorden en een deur naar het oosten.")
 
@@ -59,6 +59,9 @@ class Location:
 
     def setCommands(self, commands):
         self.commands = commands
+
+    def getName(self):
+        return self.name
 
     def addCommand(self, name, aliases, type, description, function):
         self.commands.append({"name": name, "type": type, "aliases": aliases,"description": description, "function": function})
