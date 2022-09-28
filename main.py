@@ -34,12 +34,8 @@ def register_global_commands():
     register_global_command("zuid", lambda: move("south"), ["z", "south"])
     register_global_command("west", lambda: move("west"), ["w", "west"])
 
-def register_events():
-    eventsmanager.register_event(location='all', condition='location.getName() != "start" and ' + str(has("zuurstoftank")), function=lambda: eventsmanager.end_game_bad("Je kreeg geen zuurstof meer en stierf een pijnlijke dood."))
-
-def getInventory():
-    """Dit geeft de inventory"""
-    return inventory
+def register_events(): # Todo: has gaat altijd false teruggeven
+    eventsmanager.register_event(location='all', condition='location.getName() != "start" and not has("zuurstoftank")', function=lambda: eventsmanager.end_game_bad("Je kreeg geen zuurstof meer en stierf een pijnlijke dood."))
 
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
@@ -61,14 +57,6 @@ def pak(item):
     else:
         print("Je kan dit item niet oppakken.")
 
-def has(itemname):
-    global inventory
-    for item in inventory:
-        print(item.getName())
-        if item.getName() == itemname:
-            return True
-    return False
-
 # Hier komt grotendeels de game logica
 def prepare_all_locations():
     """Dit voert alle voorbereidende opdrachten uit voor alle locaties"""
@@ -80,7 +68,7 @@ def prepare_all_locations():
 def prepare_start():
     start = get_location("start")
     start.setSouth(get_location("test"))
-    start.addItem(Item("zuurstoftank", "Een zuurstoftank met ongeveer 50% capaciteit."))
+    start.addItem(Item("zuurstoftank", "Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar."))
     for item in start.items:
         register_command(start, "pak " + item.getName(), lambda: pak(item), ["p " + item.getName(), "pak " + item.getName(), "pick up " + item.getName()])
 
@@ -96,28 +84,28 @@ def move(direction):
     global location
     if direction == "noord":
         loc = location.getNorth()
-        if loc == None:
+        if loc == '':
             print("Je kan niet naar het noorden.")
         else:
             location = loc 
             print("Je gaat naar het noorden...")
     elif direction == "oost":
         loc = location.getEast()
-        if loc == None:
+        if loc == '':
             print("Je kan niet naar het oosten.")
         else: 
             location = loc 
             print("Je gaat naar het oosten...")
     elif direction == "south":
         loc = location.getSouth()
-        if loc == None:
+        if loc == '':
             print("Je kan niet naar het zuiden.")
         else: 
             location = loc 
             print("Je gaat naar het zuiden...")
     elif direction == "west":
         loc = location.getWest()
-        if loc == None:
+        if loc == '':
             print("Je kan niet naar het westen.")
         else: 
             location = loc 
@@ -150,7 +138,8 @@ def gameloop():
     """Dit is de gameloop van de game"""
     while True:
         global location
-        eventsmanager.check_events(location)
+        global inventory
+        eventsmanager.check_events(location, inventory)
         location.printDescription()
         valid = False
         while not valid:
