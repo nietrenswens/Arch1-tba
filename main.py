@@ -101,6 +101,8 @@ def prepare_all_locations():
     """Dit voert alle voorbereidende opdrachten uit voor alle locaties"""
 
     prepare_start()
+    prepare_bostop()
+    prepare_klif()
 
 
 #prepare locations
@@ -114,6 +116,20 @@ def prepare_start():
     for item in start.items:
         itemname = item.getName()
         register_command(start, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
+
+def prepare_klif():
+    """Dit voert alle voorbereidende opdrachten uit voor de klif locatie"""
+    klif = get_location("klif")
+    klif.setSouth(get_location("start"))
+
+def prepare_bostop():
+    """Dit voert alle voorbereidende opdrachten uit voor de bostop locatie"""
+    bostop = get_location("bostop")
+    bostop.setWest(get_location("start"))
+    # bostop.addItem(Item(name="sleutel", description="Een sleutel. Hij ziet er oud uit, maar hij lijkt nog steeds te werken.", usable=True))
+    # for item in bostop.items:
+    #     itemname = item.getName()
+    #     register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
 
 def examine(item):
     """Dit onderzoekt een item"""
