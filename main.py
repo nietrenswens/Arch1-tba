@@ -28,13 +28,15 @@ def register_global_command(name, function, aliases=[]):
     commands.append({"name": name, "function": function, "aliases": aliases})
 
 def register_global_commands():
+    """Dit registreert alle globale commando's"""
     register_global_command("inventory", check_inventory, ["i", "inv", "inventaris"])
     register_global_command("noord", lambda: move("noord"), ["n", "north"])
     register_global_command("oost", lambda: move("oost"), ["o", "east"])
     register_global_command("zuid", lambda: move("south"), ["z", "south"])
     register_global_command("west", lambda: move("west"), ["w", "west"])
 
-def register_events(): # Todo: has gaat altijd false teruggeven
+def register_events():
+    """Registreert alle events"""
     eventsmanager.register_event(location='all', condition='location.getName() != "start" and not has("zuurstoftank")', function=lambda: eventsmanager.end_game_bad("Je kreeg geen zuurstof meer en stierf een pijnlijke dood."))
 
 def check_inventory():
@@ -66,6 +68,7 @@ def prepare_all_locations():
 
 #prepare locations
 def prepare_start():
+    """Dit voert alle voorbereidende opdrachten uit voor de start locatie"""
     start = get_location("start")
     start.setSouth(get_location("test"))
     start.addItem(Item("zuurstoftank", "Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar."))
@@ -143,11 +146,12 @@ def gameloop():
         location.printDescription()
         valid = False
         while not valid:
+            # Geeft een lijst met commando's die de speler kan gebruiken
             print("Je kan de volgende dingen doen: ")
             for command in location.getCommands():
-                print(command["name"])
+                print('-',command["name"])
             for command in commands:
-                print(command["name"])
+                print('-',command["name"])
             print('\n')
             asked_command = ask_for_command()
             for command in location.getCommands():
@@ -170,6 +174,7 @@ def gameloop():
                             command["function"]()
             if not valid:
                 print("Dat is geen geldig commando.")
+            print('\n')
 
 
 
