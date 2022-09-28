@@ -54,16 +54,24 @@ class Location:
         self.commands = []
         self.items = []
         if name == 'start':
-            print("Je bent in de startkamer. Je ziet een deur naar het noorden en een deur naar het oosten.")
+            print("Je ontwakend uit een diepe slaap. Je hoort een scherpe piep in je oren en alles doet in principe pijn. Waarom lig je daar? Je herinnert je het parachute springen uit het vliegtuig, de scherpe duw die je in je rug kreeg en je parachute die niet open wilde gaan. Het is een wonder dat je nog leeft. Je voelt je wazig en je kan maar moeilijk ademen.")
 
     def printDescription(self):
         items = ""
         for item in self.items:
-            items += item.getDescription() + ", "
+            items += item.getDescription()
+            if item != self.items[-1]:
+                items += " Ook zie je "
         if items != "":
             print(self.description, "Naast je liggen ook nog een aantal items: " + items)
         else:
             print(self.description)
+
+    def getItem(self, itemName):
+        for item in self.items:
+            if item.getName() == itemName:
+                return item
+        return None
 
     def setNorth(self, north):
         self.north = north

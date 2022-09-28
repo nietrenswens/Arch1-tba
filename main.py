@@ -19,8 +19,9 @@ gamechangers = {
 # Hier worden componenten zoals locatie's geregistreerd
 def register_locations():
     """Dit registreert de locaties van de game"""
-    register_location("start", "Hey ho")
-    register_location("test", "Ho ho")
+    register_location("start", "Om je heen zie je een groot bos. De plek waar je staat lijkt de hoogste punt van een berg te zijn. Richting het noorden lijk je een afgrond te zien. Richting het westen en zuiden zie je een dichtbegroeid bos, het alsof je daar niet heen kunt. Richting het oosten lijkt het bos toegankelijk.")
+    register_location("bostop", "Ho ho")
+    register_location("klif", "Ho ho")
 
 def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
@@ -37,6 +38,7 @@ def register_global_commands():
     register_global_command("oost", lambda: move("oost"), ["o", "east"])
     register_global_command("zuid", lambda: move("south"), ["z", "south"])
     register_global_command("west", lambda: move("west"), ["w", "west"])
+    register_global_command("kijk", lambda: location.printDescription(), ["k", "kijk", "look"])
 
 def register_events():
     """Registreert alle events"""
@@ -51,9 +53,10 @@ def check_inventory():
         for item in inventory:
             print(item.getName())
 
-def pak(item):
+def pak(itemname):
     """Dit pakt een item op"""
-    if item in location.items:
+    item = location.getItem(itemname)
+    if item != None:
         inventory.append(item)
         location.items.remove(item)
         register_global_command("onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
@@ -62,7 +65,7 @@ def pak(item):
         if item.isUsable():
             register_global_command("gebruik " + item.getName(), lambda: gebruik(item), ["g " + item.getName(), "gebruik " + item.getName(), "use " + item.getName()])
 
-        print("Je hebt het item opgepakt.")
+        print("Je hebt het item(" + item.getName() + ") opgepakt.")
     else:
         print("Je kan dit item niet oppakken.")
 
@@ -76,7 +79,7 @@ def gebruik(item):
     """Dit gebruikt een item"""
     if item in inventory:
         if item.getName() == "zuurstoftank":
-            print("Je hebt de zuurstoftank gebruikt.")
+            print("Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp en je voelt je langzaam beter.")
             gamechangers["used_zuurstoftank"] = True
             inventory.remove(item)
             removeCommand("gebruik " + item.getName())
@@ -104,10 +107,13 @@ def prepare_all_locations():
 def prepare_start():
     """Dit voert alle voorbereidende opdrachten uit voor de start locatie"""
     start = get_location("start")
-    start.setSouth(get_location("test"))
+    start.setEast(get_location("bostop"))
+    start.setNorth(get_location("klif"))
+    start.addItem(Item(name="parachute", description="Een parachute. Hij ziet hevig beschadigd uit. Zal hij nog werken?", usable=True))
     start.addItem(Item(name="zuurstoftank", description="Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar.", usable=True))
     for item in start.items:
-        register_command(start, "pak " + item.getName(), lambda: pak(item), ["p " + item.getName(), "pak " + item.getName(), "pick up " + item.getName()])
+        itemname = item.getName()
+        register_command(start, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
 
 def examine(item):
     """Dit onderzoekt een item"""
@@ -126,6 +132,8 @@ def move(direction):
         else:
             location = loc 
             print("Je gaat naar het noorden...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
     elif direction == "oost":
         loc = location.getEast()
         if loc == '':
@@ -133,6 +141,8 @@ def move(direction):
         else: 
             location = loc 
             print("Je gaat naar het oosten...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
     elif direction == "south":
         loc = location.getSouth()
         if loc == '':
@@ -140,6 +150,8 @@ def move(direction):
         else: 
             location = loc 
             print("Je gaat naar het zuiden...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
     elif direction == "west":
         loc = location.getWest()
         if loc == '':
@@ -147,6 +159,8 @@ def move(direction):
         else: 
             location = loc 
             print("Je gaat naar het westen...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
 
 def register_location(name, description):
     """Dit registreert een locatie"""
@@ -173,11 +187,10 @@ def ask_for_command():
 
 def gameloop():
     """Dit is de gameloop van de game"""
+    global location
+    global inventory
+    location.printDescription()
     while True:
-        global location
-        global inventory
-        eventsmanager.check_events(location, inventory, gamechangers)
-        location.printDescription()
         valid = False
         while not valid:
             # Geeft een lijst met commando's die de speler kan gebruiken
@@ -190,22 +203,32 @@ def gameloop():
             asked_command = ask_for_command()
             for command in location.getCommands():
                 if command["name"] == asked_command:
-                    command["function"]()
+                    if type(command["function"]) == str:
+                        eval(command["function"])
+                    else:
+                        command["function"]()
                     valid = True
+                    break
                 else:
                     for alias in command["aliases"]:
                         if alias == asked_command:
+                            if type(command["function"]) == str:
+                                eval(command["function"])
+                            else:
+                                command["function"]()
                             valid = True
-                            command["function"]()
+                            break
             for command in commands:
                 if command["name"] == asked_command:
                     command["function"]()
                     valid = True
+                    break
                 else:
                     for alias in command["aliases"]:
                         if alias == asked_command:
                             valid = True
                             command["function"]()
+                            break
             if not valid:
                 print("Dat is geen geldig commando.")
             print('\n')
