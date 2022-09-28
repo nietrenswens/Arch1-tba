@@ -1,20 +1,48 @@
 class Location:
     """
-    Een class die een item representeert
+    Een class die een locatie representeert
 
     ...
 
     Attributes
     ----------
     name : str
-        naam van het item
-    equippable : bool
-        kan de speler het item vasthouden
+        naam van de locatie
+    description : str
+        beschrijving van de locatie
+    north : location
+        locatie object van de locatie naar het noorden
+    east : location
+        locatie object van de locatie naar het oosten
+    south : location
+        locatie object van de locatie naar het zuiden
+    west : location 
+        locatie object van de locatie naar het westen
 
     Methods
     -------
-    printDescription(additional=""):
-        Prints the person's name and age.
+    printDescription()
+        print de beschrijving van de locatie
+    setNorth(north)
+        zet de locatie naar het noorden
+    setEast(east)
+        zet de locatie naar het oosten
+    setSouth(south)
+        zet de locatie naar het zuiden
+    setWest(west)
+        zet de locatie naar het westen
+    getNorth()
+        geeft de locatie naar het noorden
+    getEast()
+        geeft de locatie naar het oosten
+    getSouth()
+        geeft de locatie naar het zuiden
+    getWest()
+        geeft de locatie naar het westen
+    getCommands()
+        geeft de commands van de locatie
+    setCommands(commands)
+        zet de commands van de locatie
     """
     def __init__(self, name, description):
         self.name = name
@@ -29,7 +57,10 @@ class Location:
             print("Je bent in de startkamer. Je ziet een deur naar het noorden en een deur naar het oosten.")
 
     def printDescription(self):
-        print(self.description)
+        items = ""
+        for item in self.items:
+            items += item.getDescription() + ", "
+        print(self.description, "Naast je liggen ook nog een aantal items: " + items)
 
     def setNorth(self, north):
         self.north = north

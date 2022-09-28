@@ -8,15 +8,17 @@ class Item:
     ----------
     name : str
         naam van het item
-    equippable : bool
-        kan de speler het item vasthouden
+    description : str
+        beschrijving van het item
 
     Methods
     -------
     info(additional=""):
-        Prints the person's name and age.
+        print de beschrijving van het item
+    getName()
+        geeft de naam van het item
     """
-    def __init__(self, name, description):
+    def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
 
@@ -25,3 +27,6 @@ class Item:
 
     def getName(self):
         return self.name
+        
+    def getDescription(self):
+        return self.description
