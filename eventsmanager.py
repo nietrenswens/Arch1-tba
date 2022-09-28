@@ -2,16 +2,19 @@
 import main
 events = []
 inventory = []
+gamechangers = {}
 
 def register_event(location, function, condition):
     """Registreert een event"""
     global events
     events.append({"location": location, "function": function, "condition": condition})
 
-def check_events(location, inv):
+def check_events(location, inv, gc):
     """Controleert of er een event moet worden afgevuurd"""
     global events
     global inventory
+    global gamechangers
+    gamechangers = gc
     inventory = inv
     for event in events:
         if event["location"] == location:

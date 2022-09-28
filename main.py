@@ -11,6 +11,9 @@ locations = []
 location = Location("NO0", "Er is iets fout gegaan tijdens het opzetten van de game.")
 inventory = []
 commands = []
+gamechangers = {
+    "used_zuurstoftank": False
+}
 
 
 # Hier worden componenten zoals locatie's geregistreerd
@@ -37,7 +40,7 @@ def register_global_commands():
 
 def register_events():
     """Registreert alle events"""
-    eventsmanager.register_event(location='all', condition='location.getName() != "start" and not has("zuurstoftank")', function=lambda: eventsmanager.end_game_bad("Je kreeg geen zuurstof meer en stierf een pijnlijke dood."))
+    eventsmanager.register_event(location='all', condition='location.getName() != "start" and gamechangers["used_zuurstoftank"] == False', function=lambda: eventsmanager.end_game_bad("Je kreeg geen zuurstof meer en stierf een pijnlijke dood."))
 
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
@@ -53,11 +56,36 @@ def pak(item):
     if item in location.items:
         inventory.append(item)
         location.items.remove(item)
-        register_command(location, "onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
+        register_global_command("onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
         location.removeCommand("pak " + item.getName()) # Zorgt ervoor dat de speler niet twee keer hetzelfde item kan oppakken
+        
+        if item.isUsable():
+            register_global_command("gebruik " + item.getName(), lambda: gebruik(item), ["g " + item.getName(), "gebruik " + item.getName(), "use " + item.getName()])
+
         print("Je hebt het item opgepakt.")
     else:
         print("Je kan dit item niet oppakken.")
+
+def removeCommand(name):
+    """Dit verwijdert een commando"""
+    for command in commands:
+        if command["name"] == name:
+            commands.remove(command)
+
+def gebruik(item):
+    """Dit gebruikt een item"""
+    if item in inventory:
+        if item.getName() == "zuurstoftank":
+            print("Je hebt de zuurstoftank gebruikt.")
+            gamechangers["used_zuurstoftank"] = True
+            inventory.remove(item)
+            removeCommand("gebruik " + item.getName())
+            removeCommand("pak " + item.getName())
+            removeCommand("onderzoek " + item.getName())
+        else:
+            print("Je kan dit item niet gebruiken.")
+    else:
+        print("Je kan dit item niet gebruiken.")
 
 # Hier komt grotendeels de game logica
 def prepare_all_locations():
@@ -71,7 +99,7 @@ def prepare_start():
     """Dit voert alle voorbereidende opdrachten uit voor de start locatie"""
     start = get_location("start")
     start.setSouth(get_location("test"))
-    start.addItem(Item("zuurstoftank", "Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar."))
+    start.addItem(Item(name="zuurstoftank", description="Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar.", usable=True))
     for item in start.items:
         register_command(start, "pak " + item.getName(), lambda: pak(item), ["p " + item.getName(), "pak " + item.getName(), "pick up " + item.getName()])
 
@@ -142,7 +170,7 @@ def gameloop():
     while True:
         global location
         global inventory
-        eventsmanager.check_events(location, inventory)
+        eventsmanager.check_events(location, inventory, gamechangers)
         location.printDescription()
         valid = False
         while not valid:

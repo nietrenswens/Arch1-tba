@@ -60,7 +60,10 @@ class Location:
         items = ""
         for item in self.items:
             items += item.getDescription() + ", "
-        print(self.description, "Naast je liggen ook nog een aantal items: " + items)
+        if items != "":
+            print(self.description, "Naast je liggen ook nog een aantal items: " + items)
+        else:
+            print(self.description)
 
     def setNorth(self, north):
         self.north = north
