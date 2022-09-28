@@ -18,15 +18,20 @@ class Item:
     getName()
         geeft de naam van het item
     """
-    def __init__(self, name: str, description: str):
+    def __init__(self, name: str, description: str, usable: bool = False):
         self.name = name
         self.description = description
+        self.usable = usable
+        self.used = False
 
     def info(self):
         print(self.description)
 
     def getName(self):
         return self.name
-        
+
     def getDescription(self):
         return self.description
+    
+    def isUsable(self):
+        return self.usable
