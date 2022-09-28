@@ -1,6 +1,6 @@
 """
 Arch 1 Game-project
-Noah en Rens Mulder
+Noah El Menyari en Rens Mulder (1G Basecamp)
 """
 from objects.location import Location
 from objects.item import Item
@@ -208,13 +208,13 @@ def gameloop():
 
 def main():
     """Dit is de main functie van de game"""
-    register_locations()
-    prepare_all_locations()
-    register_global_commands()
-    register_events()
-    prepgame()
+    register_locations() # Registreert alle locaties
+    prepare_all_locations() # Zet North, South, East en West, en items in de locaties
+    register_global_commands() # Registreert alle globale commando's
+    register_events() # Registreert alle events
+    prepgame() # Voert alle voorbereidende opdrachten uit
     # print(locations[0].getName())
-    gameloop()
+    gameloop() # Start de gameloop
 
 if __name__ == "__main__":
     main()
