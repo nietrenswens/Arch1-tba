@@ -82,6 +82,12 @@ def gebruik(item):
             removeCommand("gebruik " + item.getName())
             removeCommand("pak " + item.getName())
             removeCommand("onderzoek " + item.getName())
+        elif item.getName() == "sleutel": # Dit is een voorbeeld van een item dat niet gebruikt kan worden op sommige locaties
+            if location.getName() == "test":
+                print("Je hebt de sleutel gebruikt.")
+                location.setSouth(get_location("test2"))
+            else:
+                print("Je kan dit item hier niet gebruiken.")
         else:
             print("Je kan dit item niet gebruiken.")
     else:
