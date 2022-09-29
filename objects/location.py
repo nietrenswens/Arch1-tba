@@ -1,4 +1,5 @@
-import time, sys, random
+import utils
+import time
 
 class Location:
     """
@@ -56,8 +57,11 @@ class Location:
         self.commands = []
         self.items = []
         if name == 'start':
-            starttext = "Je ontwaakt uit een diepe slaap. Je hoort een scherpe piep in je oren en alles doet in principe pijn. Waarom lig je daar? Je herinnert je het parachute springen uit het vliegtuig, de scherpe duw die je in je rug kreeg en je parachute die niet open wilde gaan. Het is een wonder dat je nog leeft. Je voelt je wazig en je kan maar moeilijk ademen."
-            slow_type(starttext)
+            starttext = "Je ontwakend uit een diepe slaap. Je hoort een scherpe piep in je oren en alles doet in principe pijn.\
+                 Waarom lig je daar? Je herinnert je het parachute springen uit het vliegtuig, de scherpe duw die je in je rug\
+                 kreeg en je parachute die niet open wilde gaan. Het is een wonder dat je nog leeft. Je voelt je wazig en je kan\
+                 maar moeilijk ademen. (tip: weet je niet hoe je verder moet? Typ dan 'help' in)"
+            utils.slow_type(starttext)
             print('\n')
             time.sleep(2)
             
@@ -68,12 +72,10 @@ class Location:
             if item != self.items[-1]:
                 items += " Ook zie je "
         if items != "":
-            slow_type(self.description + " Naast je liggen ook nog een aantal items: " + items)
+            utils.slow_type(self.description + " Naast je liggen ook nog een aantal items: " + items)
         else:
-            slow_type(self.description)
+            utils.slow_type(self.description)
         print('\n')
-
-    typing_speed = 200 #wpm
 
     def getItem(self, itemName):
         for item in self.items:
@@ -130,9 +132,3 @@ class Location:
         for command in self.commands:
             if command["name"] == commandName:
                 self.commands.remove(command)
-
-def slow_type(t):
-    for l in t:
-        sys.stdout.write(l)
-        sys.stdout.flush()
-        time.sleep(random.random()*10.0/100)
