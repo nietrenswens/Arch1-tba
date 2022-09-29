@@ -2,6 +2,7 @@
 Arch 1 Game-project
 Noah El Menyari en Rens Mulder (1G Basecamp)
 """
+import time, sys, random
 from objects.location import Location
 from objects.item import Item
 import eventsmanager
@@ -66,7 +67,7 @@ def check_inventory():
 def pak(itemname):
     """Dit pakt een item op"""
     item = location.getItem(itemname)
-    if item != None:
+    if item is not None:
         inventory.append(item)
         location.items.remove(item)
         register_global_command("onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
@@ -189,6 +190,13 @@ def move(direction):
             print("Je gaat naar het westen...")
             eventsmanager.check_events(location, inventory, gamechangers)
             location.printDescription()
+
+typing_speed = 100 #wpm
+def slow_type(t):
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(random.random()*10.0/typing_speed)
 
 def register_location(name, description):
     """Dit registreert een locatie"""
