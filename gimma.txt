@@ -1,20 +1,30 @@
-locaties:
+Text voor de game:
 
 
 Top:
 "Je wordt wakker op een onbekende plek. Je bent omringd door wolken en krijgt het gevoel dat je niet kan ademen... Je zicht voelt wazig..."
 -kijk-
-"Naast je ligt een zuurstoftank."
-1 Pak hem op
-1 "Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp waardoor je nu een parachute naast je ziet liggen.
-Hij ziet er niet al te best uit..."
-- Pak de parachute op
-- Je hebt geen zin om dit mee te sjouwen, je laat hem liggen
-WAARHEEN
+"Je ziet net nog dat naast je een zuurstoftank ligt. Ook ligt er iets verder een parachute. Hij ziet er niet al te best uit."
+WAT WIL JE DOEN
+- 1 Pak zuurstoftank
+- 2 Pak de parachute 
+- 3 Ademen is voor zwakkelingen
+- 4 go north
+- 5 go east
 
+2/3 "Je beeld wordt steeds waziger en je voelt je ineens heel slaperig. GAME OVER"
 
-- Zuurstof is voor zwakkelingen
-"Je beeld wordt steeds waziger en je voelt je ineens heel slaperig. GAME OVER"
+1 "Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp waardoor je nu een parachute naast je ziet liggen. Hij ziet er niet al te best uit..."
+WAT WIL JE DOEN
+- 1 Pak de parachute
+- 2 go north
+- 3 go east
+
+1 "Je stopt de parachute in je tas en besluit rond te gaan kijken."
+WAT WIL JE DOEN
+- 1 go north
+- 2 go east
+
 
 - 
 
@@ -25,18 +35,21 @@ Klif:
 "Op de rand van de klif ligt een vis.. Je hebt best honger en probeert hem op te pakken."
 "De vis flopt uit je handen de klif af."
 "De vis brengt je spontaan op een idee..."
-"Je trekt de parachute uit je tas"
-- Spring
-"Je telt tot 3 en springt van de berg af."
+"In je ooghoek zie je ook nog een glimmende groene steen... Het lijkt bijna alsof hij je roept."
+WAT WIL JE DOEN
+- 1 inventory - Parachute
+- 2 Pak steen
+- 3 go south
+
+1 "Je haalt de parachute uit je tas en bindt de touwen om je lichaam. Je telt tot 3 en springt van de berg af."
 "Je springt en ziet pas in de lucht een enorm gat in de parachute. In plaats van te zweven donder je als een steen van de berg af. GAME OVER." 
 
+2 "Springen lijkt geen slim idee... Maar die steen is wel heel mooi. Je stopt de steen in je broekzak."
 
-- Stop de parachute terug in je tas
-"Dit lijkt geen slim idee... Misschien eerst even verder onderzoeken."
-"In je ooghoek zie je een glimmende groene steen... Het lijkt bijna alsof hij je roept."
-- Neem de steen mee
-- Laat de steen liggen
-WAARHEEN
+WAT WIL JE DOEN
+- 1 go south
+
+
 
 Bostop:
 "Je loopt een bos in. Het is donker maar iets verderop hoor je een vreemd gehuil...."
@@ -45,16 +58,27 @@ Bostop:
 "Walvis: ..... h .. eeel p..... 
 ...
 ..  please ...... make it stop...."
-- Verlos de walvis uit zijn leiden
-"Je ziet een grote scherpe tak liggen. Je neemt de tak in je hand en steekt de walvis in zijn hart..."
+WAT WIL JE DOEN
+- 1 Verlos de walvis uit zijn leiden
+- 2 Geef de walvis een schop
+- 3 go west
+- 4 go east
+- 5 go south
+
+1 "Je ziet een grote scherpe tak liggen. Je neemt de tak in je hand en steekt de walvis in zijn hart..."
 "Het gehuil van de walvis sterft langzaam uit."
 "Je ziet iets glinsteren in de borstkas van de walvis.. Je steekt je hand erin en haalt een gouden sleutel tevoorschijn."
 "Je stopt de sleutel in je zak."
-WAARHEEN
-- Geef de walvis een schop
-"De walvis begint harder te huilen..."
-WAARHEEN
+WAT WIL JE DOEN
+- 1 go west
+- 2 go east
+- 3 go south
 
+2 "De walvis begint harder te huilen..."
+WAT WIL JE DOEN
+- 1 go west
+- 2 go east
+- 3 go south
 
 
 Klifhuis:
@@ -63,17 +87,150 @@ Klifhuis:
 "Je opent de deur..."
 "De hele chalet staat leeg op één ding na."
 "Op een tafel in de hoek ligt een dikke jonko..."
-- Smoke
-"Naast de jonko ligt een verroestte Zippo.. je lit 'm en voelt de stress je lichaam verlaten."
+WAT WIL JE DOEN
+- 1 smoke de jonko
+- 2 ieuw drugs
+- 3 go west
+
+1 "Naast de jonko ligt een verroestte Zippo.. je lit 'm en voelt de stress je lichaam verlaten."
 "Je bent in lange tijden niet zo skaff geweest... met rode ogen en een zwaar hoofd verlaat je de chalet."
-WAARHEEN
+WAT WIL JE DOEN
+- 1 go west
 
-- Drugs are bad
-"Dit is niks voor mij... je verlaat telerugesteld de chalet"
-WAARHEEN
+2 "Dit is niks voor mij... je verlaat telerugesteld de chalet"
+WAT WIL JE DOEN
+- 1 go west
 
-Bostop
+Zuidelijke Bostop:
+"Je loopt verder naar beneden door het bos. Je wordt omringd door de groene natuur en voelt de rust zich over je lichaam wassen..."
+"Ineens voel je iets scherps om je been klemmen... 'AUAAAA' schreeuw je uit. Wanneer je naar beneden kijkt zie je dat je in een berenval bent gestapt."
+"Kut...."
+"Gelukkig heb je dit ooit in een Bear Grills show gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag."
+"Terwijl je bezig bent zie je de bovenkant van een fles met een rode drop de grond uit steken."
+"De berenval opent en je haalt voorzichtig je been er uit... Je bloedt echter flink. Had je maar iets om je wonden te verbinden.."
+WAT WIL JE DOEN
+- 1 Graaf de fles uit
+- 2 inventory - parachute
+- 3 go north
+- 4 go south
 
+1 "Met blote handen begin je in de aarde rondom de fles te wroeten. Langzamerhand komt het label op de fles tevoorschijn..."
+"Bacardi..... Lemon?"
+"Dit zou handig kunnen zijn later..."
+WAT WIL JE DOEN
+- 1 Drink de fles
+- 2 Pak de fles
+- 3 inventory - parachute
+- 4 go north
+- 5 go south
+
+1 "Je opent de fles en neemt een slok. En nog een slok... en nog een slok."
+"De alcohol verdunt je bloed waardoor je nog sneller uitbloedt... De pijn vaagt langzaam weg en je voelt je ineens heel duizelig. GAME OVER"
+
+2 "Je stopt de fles in je tas."
+WAT WIL JE DOEN
+- 2.1 inventory - parachute
+- 2.2 go north
+- 2.3 go south
+
+4/5/2/2.2/2.3 "Je doet een poging om verder te lopen, maar je bloedt te hevig en valt een meter verder neer. GAME OVER"
+
+3/2.1 "Dit kan ik misschien gebruiken. Je wikkelt de parachute strak om je been heen om het bloeden te stoppen. Het is misschien niet steriel maar het zal maar moeten werken voor nu."
+WAT WIL JE DOEN
+- go north
+- go south
+
+Dehet hek:
+"Je loopt wat verder naar beneden het bos in. Voor je staat ineens een enorm hek. Aan de opening hangt een slot."
+WAT WIL JE DOEN
+- 1 Klim over het hek
+- 2 inventory - sleutel
+- 3 go north
+
+1 "Je pakt het hek met beide handen vast en doet een poging omhoog te klimmen, maar er schiet direct een scherpe pijn door je been. Dit gaat niet lukken zo."
+WAT WIL JE DOEN
+- 1.1 inventory - sleutel
+- 1.2 go north
+
+2/1.1 "Je pakt de sleutel uit je zak. Er zit nog een beetje walvisblubber op. Je opent het hek."
+(misschien moeten we dit als nieuwe locatie in de backend doen, omdat je nu wel andere richtingen opkan, dus bijv dehethek dicht en dehethek open)
+WAT WIL JE DOEN
+- 1 go north
+- 2 go east
+- 3 go west
+
+
+Het appie bos:
+"Dieper in het bos is het nogal donker. Het lijkt hier dood te lopen. Aan een tak van een boom hangt een Albert Heijn tas. Achter je hoor je ineens een bekend getril."
+"Je draait je om en ziet op de grond een mobieltje licht geven."
+WAT WIL JE DOEN
+- 1 Pak de boodschappentas
+- 2 Pak de mobiel
+- 3 go west
+
+1 "Je trekt de boodschappentas uit de boom en stopt hem in je tas. Misschien kan je nog langs de appie als je van deze berg af kan komen voor sluitingstijd..."
+2 "Je pakt het mobieltje op. Geen bereik. Je opent de enige app die op de mobiel lijkt te staan, Subway Surfers."
+"'Loading..... You need an internet connection to play this game.' Uit frustratie gooi je de mobiel tegen een boom.
+WAT WIL JE DOEN
+- go west
+
+Klifsprong:
+"Iets verderop kom je weer bij een klif uit... Het lijkt erop dat dit de enige weg van de berg af is."
+WAT WIL JE DOEN
+- 1 inventory Parachute
+- 2 inventory Appie tas
+- go east
+
+1 "Je haalt de parachute uit je tas en bindt de touwen om je lichaam. Je telt tot 3 en springt van de berg af."
+"Je springt en ziet pas in de lucht een enorm gat in de parachute. In plaats van te zweven donder je als een steen van de berg af. GAME OVER."
+2 "Je hebt vroeger bij de Albert Heijn gewerkt en weet dat deze tassen van het sterkste gerecycelde plastic worden gemaakt. Je pakt de handvaten stevig vast en springt met je armen in de lucht van de klif."
+"Wanneer je naar beneden springt zie je onderaan de klif iemand staan. Als een veer zweef je langzaam naar beneden en land je perfect naast hen."
+
+Henk:
+"Pas wanneer je met beide benen op de grond staat kijk je op en zie je een heel bekend gezicht... HENK..."
+"Ineens herinner je je alles. 'Jij was het.... door jou zit ik hier al dagen vast... Jij hebt mij uit de helikopter geduwd'"
+"'Ik kan het uitle-', Henk kan zijn zin niet afmaken. Je rent op hem af klaar om te vechten."
+WAT WIL JE DOEN
+1 Geef henk een trap
+2 inventory - steen
+
+1 "Je rent op Henk af en begint wild te trappen. Je was alleen vergeten dat Henk Basic gaat. Henk slaat je K.O. met één stomp. GAME OVER"
+2 "Henk is best breed dus je gebruikt de steen als wapen. Je gooit de steen met chirurgische preciesie op zijn slaap. Henk valt neer."
+"Voordat het leven Henks lichaam verlaat mompelt hij zijn laatste woorden 'J..e...... moeder.......'"
+"YOU DEFEATED HENK"
+(miss moet dit dan ook een nieuwe locatie zijn in de backend aangezien j eniet verder kan als je henk niet verslaat)
+WAT WIL JE DOEN
+- go north
+- go south
+
+Rekenmachinebos:
+"Overal waar je heen gaat lijkt alleen maar naar meer bos te leiden. Je hoort een vaag getik.. alsof iemand knopjes aan het indrukken is."
+"Je volgt het geluid naar een struik toe."
+"Je spiekt achter de struik en ziet een rat met een rekenmachine in zijn hand. Op het schermpje van de rekenmachine staat het getal 58008. Je vraagt je af waar een rat wiskunde voor nodig heeft." 
+WAT WIL JE DOEN
+1 Steel de rekenmachine van de rat
+2 go south
+
+1 "Je trekt de rekenmachine nog met best veel moeite uit de kleine maar sterke pootjes van de rat. Wanneer je doorloopt hoor je de rat zachtjes snikken..."
+
+Tovenaar:
+"Je loopt verder naar beneden... Het lijkt erop dat je met dit pad eindelijk de berg afkomt. Je stopt met lopen, maar dit gaat tegen je wil in. Het voelt plots alsof er blokken ijzer aan je beide benen hangen."
+"Je kijkt omhoog en ziet een schimmig silhouette staan. Het silhouette komt dichterbij en langzamerhand zie je het gezicht van de man. Hij heeft een lange punthoed op en een overduidelijk neppe baard op zijn gezicht gelijmd..."
+"'Ik ben de tovenaar van de berg en niemand verlaat de berg zonder mijn raadsel op te lossen' schreeuwt hij. Dit zou best intimiderend als hij geen nepbaard aan had."
+"'Om langs mij te komen moet je een eeuwenoud raadsel oplossen. Maar weinigen hebben dit raadsel kunnen beantwoorden. Ik geef je twee kansen. Het raadsel luidt als volgt..."
+"2 + 2 = ?"
+- 1 6
+- 2 3
+- 3 vis
+- 4 inventory - rekenmachine
+
+1/2/3 "'Serieus? Ik had beter van je verwacht. Nu moet ik je hier voor eeuwig vasthouden en daar had ik eigenlijk helemaal geen zin in.' GAME OVER."
+4 "Je haalt je rekenmachine tevoorschijn. De tovenaar schrikt. Met beide handen pak je hem vast en tik je 2 + 2 in...."
+"'Neeee' schreeuwt de tovenaar nog uit maar het is te laat. Je hebt al op de = gedrukt. Op het scherm van de rekenmachine komt heel groot '4' te staan."
+"Je kijkt omhoog en de tovenaar lijkt in het niets te zijn verdwenen... De bomen die eerst je zicht naar beneden blokkeerden lijken samen met hem te zijn verdwenen."
+"Onderaan de berg zie je je moeders auto staan. Ineens heb je totaal geen herinnering van hoe je onderaan deze berg komt, maar het voelt alsof je lang weg bent geweest."
+"YOU ESCAPED THE MOUNTAIN"
+END
 
 items:
 zuurstof tank masker
