@@ -83,7 +83,9 @@ def removeCommand(name):
     """Dit verwijdert een commando"""
     for command in commands:
         if command["name"] == name:
-            commands.remove(command)
+            theCommand = command
+    if theCommand is not None:
+        commands.remove(theCommand)
 
 def gebruik(item):
     """Dit gebruikt een item"""
