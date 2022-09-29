@@ -50,6 +50,7 @@ def register_global_command(name, function, aliases=[]):
 
 def register_global_commands():
     """Dit registreert alle globale commando's"""
+    register_global_command("help", lambda: print_help(), ["h", "help"])
     register_global_command("inventory", check_inventory, ["i", "inv", "inventaris"])
     register_global_command("noord", lambda: move("noord"), ["n", "north"])
     register_global_command("oost", lambda: move("oost"), ["o", "east"])
@@ -226,6 +227,15 @@ def examine(item):
     else:
         print("Je kan dit item niet onderzoeken.")
 
+def print_help():
+    """Geeft een lijst met commando's die de speler kan gebruiken"""
+    print("Je kan de volgende dingen doen: ")
+    for command in location.getCommands():
+        print('-',command["name"])
+    for command in commands:
+        print('-',command["name"])
+    print('\n')
+
 def move(direction):
     """Dit verplaatst de speler naar een andere locatie"""
     global location
@@ -300,13 +310,6 @@ def gameloop():
     while True:
         valid = False
         while not valid:
-            # Geeft een lijst met commando's die de speler kan gebruiken
-            print("Je kan de volgende dingen doen: ")
-            for command in location.getCommands():
-                print('-',command["name"])
-            for command in commands:
-                print('-',command["name"])
-            print('\n')
             asked_command = ask_for_command()
             for command in location.getCommands():
                 if command["name"] == asked_command:
