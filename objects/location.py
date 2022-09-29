@@ -63,7 +63,7 @@ class Location:
             if item != self.items[-1]:
                 items += " Ook zie je "
         if items != "":
-            print(self.description, "Naast je liggen ook nog een aantal items: " + items)
+            print(self.description, "\nNaast je liggen ook nog een aantal items: " + items)
         else:
             print(self.description)
 

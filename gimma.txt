@@ -8,11 +8,10 @@ Top:
 WAT WIL JE DOEN
 - 1 Pak zuurstoftank
 - 2 Pak de parachute 
-- 3 Ademen is voor zwakkelingen
-- 4 go north
-- 5 go east
+- 3 go north
+- 4 go east
 
-2/3 "Je beeld wordt steeds waziger en je voelt je ineens heel slaperig. GAME OVER"
+3/4 "Je beeld wordt steeds waziger en je voelt je ineens heel slaperig. GAME OVER"
 
 1 "Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp waardoor je nu een parachute naast je ziet liggen. Hij ziet er niet al te best uit..."
 WAT WIL JE DOEN
@@ -20,10 +19,7 @@ WAT WIL JE DOEN
 - 2 go north
 - 3 go east
 
-1 "Je stopt de parachute in je tas en besluit rond te gaan kijken."
-WAT WIL JE DOEN
-- 1 go north
-- 2 go east
+
 
 
 - 
