@@ -149,7 +149,6 @@ WAT WIL JE DOEN
 - 1.2 go north
 
 2/1.1 "Je pakt de sleutel uit je zak. Er zit nog een beetje walvisblubber op. Je opent het hek."
-(misschien moeten we dit als nieuwe locatie in de backend doen, omdat je nu wel andere richtingen opkan, dus bijv dehethek dicht en dehethek open)
 WAT WIL JE DOEN
 - 1 go north
 - 2 go east
@@ -194,7 +193,6 @@ WAT WIL JE DOEN
 2 "Henk is best breed dus je gebruikt de steen als wapen. Je gooit de steen met chirurgische preciesie op zijn slaap. Henk valt neer."
 "Voordat het leven Henks lichaam verlaat mompelt hij zijn laatste woorden 'J..e...... moeder.......'"
 "YOU DEFEATED HENK"
-(miss moet dit dan ook een nieuwe locatie zijn in de backend aangezien j eniet verder kan als je henk niet verslaat)
 WAT WIL JE DOEN
 - go north
 - go south

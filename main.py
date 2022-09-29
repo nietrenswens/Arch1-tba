@@ -26,14 +26,14 @@ def register_locations():
     register_location("start", "")
     register_location("klif", "Het pad lijkt hier abrupt te stoppen, een klif. Je kijkt naar beneden. Het is te hoog om de grond te zien.")
     register_location("bostop", "Je loopt een bos in. Het is donker maar iets verderop hoor je een vreemd gehuil....\nJe loopt verder... Het gehuil wordt steeds luider.\nAchter een gigantische steen ligt een gestrande walvis. \
-Walvis: '..... h .. eeel p..... \n...\n..  please ...... make it stop....'\nNaast de walvis ligt een grote scherpe tak...")
+Walvis: '..... h .. eeel p..... \n...\n..  please ...... make it stop....'")
     register_location("klifhuis", "Iets verderop zie je een kleine chalet staan. 'Dit zou het echt goed doen op AirBnB', denk je bij jezelf. Je opent de deur...\n\
 Er staan geen meubels in de chalet.")
     register_location("bostopzuid", "Je loopt verder naar beneden door het bos. Je wordt omringd door de groene natuur en voelt de rust zich over je lichaam wassen...\
 \nIneens voel je iets scherps om je been klemmen... 'AUAAAA' schreeuw je uit. Wanneer je naar beneden kijkt zie je dat je volop in een berenval bent gestapt.\
-\n...Gelukkig heb je dit ooit in een Bear Grills show gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag.\
+\n...Gelukkig heb je dit een keer op Discovery Channel gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag.\
 \nDe berenval opent en je haalt voorzichtig je been er uit... Je bloedt echter flink. Je voelt je lichtjes in je hoofd.")
-    register_location("dehethek", "")
+    register_location("dehethek", "Verder het bos in staat voor je ineens een enorm hek. Aan de opening hangt een slot.")
     register_location("appiebos", "")
     register_location("klifsprong", "")
     register_location("henk", "")
@@ -79,22 +79,35 @@ def pak(itemname):
         inventory.append(item)
         location.items.remove(item)
         register_global_command("onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
+        if item.getName() == "bacardi":
+            register_command(get_location("bostopzuid"), 'drink ' + item.getName(), "drink('" + item.getName() + "')", ["d " + item.getName(), "at " + item.getName() ]) #beetje lelijk maja
         location.removeCommand("pak " + item.getName()) # Zorgt ervoor dat de speler niet twee keer hetzelfde item kan oppakken
-        
         if item.isUsable():
             register_global_command("gebruik " + item.getName(), lambda: gebruik(item), ["g " + item.getName(), "gebruik " + item.getName(), "use " + item.getName()])
 
         print("Je hebt het item(" + item.getName() + ") opgepakt.")
     else:
         print("Je kan dit item niet oppakken.")
+        
 
 def removeCommand(name):
     """Dit verwijdert een commando"""
+    theCommand = None
     for command in commands:
         if command["name"] == name:
             theCommand = command
     if theCommand is not None:
         commands.remove(theCommand)
+        
+def drink(itemname):
+    """Hiermee drink je een item... eigenlijk maar 1 item"""
+    theitem = None
+    for item in inventory:
+        if item.getName() == itemname:
+            theitem = item
+            break
+    if theitem.getName() == "bacardi":
+        eventsmanager.end_game_bad("Je opent de fles en neemt een slok. En nog een slok... en nog een slok. \nDe alcohol verdunt je bloed waardoor je nog sneller uitbloedt... De pijn vaagt langzaam weg en je sterft een vredige dood." )
 
 def gebruik(item):
     """Dit gebruikt een item"""
@@ -106,28 +119,51 @@ def gebruik(item):
             removeCommand("gebruik " + item.getName())
             removeCommand("pak " + item.getName())
             removeCommand("onderzoek " + item.getName())
-        elif item.getName() == "sleutel": # Dit is een voorbeeld van een item dat niet gebruikt kan worden op sommige locaties
-            if location.getName() == "test":
-                print("Je hebt de sleutel gebruikt.")
-                location.setSouth(get_location("test2"))
-            else:
-                print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "jonko":
-            if location.getName() == "chalet":
-                print("Je lit de jonko en voelt de stress je lichaam verlaten... met rode ogen en een zwaar hoofd druk je hem uit")
+            if location.getName() == "klifhuis":
+                print("Je lit de jonko en voelt de stress je lichaam verlaten... met rode ogen en een zwaar hoofd druk je hem uit.")
+                inventory.remove(item)
+                removeCommand("gebruik " + item.getName())
+                removeCommand("onderzoek " + item.getName())
             else:
                 print("Jonko doen kan alleen in de chalet")
         elif item.getName() == "parachute":
             if location.getName() == "klif":
                 eventsmanager.end_game_bad("Je springt met de parachute de klif af en ziet pas in de lucht een enorm gat in de parachute.\
-In plaats van te zweven donder je als een steen van de berg af en sterf je een pijnlijke dood.")
+ In plaats van te zweven donder je als een steen van de berg af en stierf je een pijnlijke dood.")
             elif location.getName() == "bostopzuid":
                 gamechangers["used_parachute"] = True
-                print("Dit kan je voor je wond gebruiken. Je wikkelt de parachute strak om je been heen om het bloeden te stoppen. Het is misschien niet steriel maar het zal maar moeten werken voor nu.")
+                print("Dit kan je voor je wond gebruiken. Je wikkelt de parachute strak om je been heen. Het is misschien niet steriel maar het zal het bloeden stoppen voor nu.")
+                inventory.remove(item)
+                removeCommand("gebruik " + item.getName())
+                removeCommand("onderzoek " + item.getName())
             else:
-                print("Je kan dit item niet gebruiken.")
+                print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "bacardi":
-            print("yp")
+            if location.getName() == "bostopzuid":
+                gamechangers["used_bacardi"] = True
+                print("Je rolt je broek op en draait de dop van de fles open. Je neemt een flinke slok en gooit de rest over je wond. Je bijt bijna je kiezen kapot van de pijn... Je wond is schoon.")
+                inventory.remove(item)
+                removeCommand("gebruik " + item.getName())
+                removeCommand("onderzoek " + item.getName())
+            else:
+                print("Je kan dit item hier niet gebruiken.")
+        elif item.getName() == "sleutel":
+            if location.getName() == "dehethek":
+                print("Je forceert de sleutel in het stroeve veroestte slot. *ching* Het slot opent.")
+                location.setEast(get_location("appiebos"))
+                location.setWest(get_location("klifsprong"))
+            else:
+                print("Je kan dit item hier niet gebruiken.")
+        elif item.getName() == "tak":
+            if location.getName() == "bostop":
+                print("Je grijpt naar de tak en valt bijna om van het gewicht. Met al je kracht zwaai je hem de lucht in en doorboor je het hart van de walvis. Het gehuil van de walvis sterft langzaam uit.")
+                location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg.") #leuk extra tekstje als ie terugkomt
+                inventory.remove(item)
+                removeCommand("gebruik " + item.getName())
+                removeCommand("onderzoek " + item.getName())
+            else:
+                print("Je kan dit item hier niet gebruiken.")
         else:
             print("Je kan dit item niet gebruiken.")
     else:
@@ -165,7 +201,8 @@ def prepare_klif():
     klif = get_location("klif")
     klif.setSouth(get_location("start"))
     klif.addItem(Item(name="steen", description="Een glimmende steen. Hij doet je denken aan je kindertijd.", usable=True))
-    klif.addItem(Item(name="vis", description="Een grote vis. De vis laat je hongerig voelen, maar hij flopt al de klif af voordat je hem kan pakken."))
+    klif.addItem(Item(name="vis", description="een grote vis. De vis laat je hongerig voelen, maar hij flopt al de klif af voordat je hem kan pakken."))
+    klif.removeItem(klif.getItem("vis"))
     register_command(klif, 'pak ' + "steen", "pak('" + "steen" + "')", ["p " + "steen", "pick up " + "steen"])
 
 def prepare_bostop():
@@ -174,18 +211,17 @@ def prepare_bostop():
     bostop.setWest(get_location("start"))
     bostop.setEast(get_location("klifhuis"))
     bostop.setSouth(get_location("bostopzuid"))
-    #register_command(bostop, 'trap de walvis') dit moet nog gefixt worden
-    #register_command(bostop, 'dood de walvis')
-    # bostop.addItem(Item(name="sleutel", description="Een sleutel. Hij ziet er oud uit, maar hij lijkt nog steeds te werken.", usable=True))
-    # for item in bostop.items:
-    #     itemname = item.getName()
-    #     register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
+    bostop.addItem(Item(name="tak", description="Een grote scherpe tak naast de walvis...", usable=True))
+    for item in bostop.items:
+        itemname = item.getName()
+        register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
+    #register_command(bostop, 'trap walvis') dit moet nog gefixt worden
 
 def prepare_klifhuis():
     """Dit voert alle voorbereidende opdrachten uit voor de klifhuis locatie"""
     klifhuis = get_location("klifhuis")
     klifhuis.setWest(get_location("bostop"))
-    klifhuis.addItem(Item(name="jonko", description="Naast het raampje zie je een dikke jonko liggen naast een verroestte Zippo aansteker."))
+    klifhuis.addItem(Item(name="jonko", description="Naast het raampje zie je een dikke jonko liggen naast een verroestte Zippo aansteker.", usable=True))
     for item in klifhuis.items:
         itemname = item.getName()
         register_command(klifhuis, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -195,13 +231,18 @@ def prepare_bostopzuid():
     bostopzuid = get_location("bostopzuid")
     bostopzuid.setNorth(get_location("bostop"))
     bostopzuid.setSouth(get_location("dehethek"))
-    bostopzuid.addItem(Item(name="bacardi", description="Uit de grond steekt een fles met een rode dop. Het is een fles Bacardi Lemon."))
+    bostopzuid.addItem(Item(name="bacardi", description="Uit de grond steekt een fles met een rode dop. Het is een fles Bacardi Lemon.", usable=True))
     for item in bostopzuid.items:
         itemname = item.getName()
         register_command(bostopzuid, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
 
 def prepare_dehethek():
     """Dit voert alle voorbereidende opdrachten uit voor de dehet hek locatie"""
+    dehethek = get_location("dehethek")
+    dehethek.setNorth("bostopzuid")
+    # register_command(dehethek) command om t hek op te klimmen  
+
+
 
 def prepare_appiebos():
     """Dit voert alle voorbereidende opdrachten uit voor de appiebos locatie"""
@@ -267,7 +308,7 @@ def move(direction):
             eventsmanager.check_events(location, inventory, gamechangers)
             location.printDescription()
 
-typing_speed = 100 #wpm
+typing_speed = 1000 #wpm
 def slow_type(t):
     for l in t:
         sys.stdout.write(l)
