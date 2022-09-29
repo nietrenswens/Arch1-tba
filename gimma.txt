@@ -2,7 +2,7 @@ Text voor de game:
 
 
 Top:
-"Je wordt wakker op een onbekende plek. Je bent omringd door wolken en krijgt het gevoel dat je niet kan ademen... Je zicht voelt wazig..."
+"Je wordt wakker op een onbekende plek. Je bent omringd door wolken en krijgt het gevoel dat je niet kan ademen... Je zicht voelt wazig.. Het lijkt erop dat je je in een bos bevindt bovenaan een berg..."
 -kijk-
 "Je ziet net nog dat naast je een zuurstoftank ligt. Ook ligt er iets verder een parachute. Hij ziet er niet al te best uit."
 WAT WIL JE DOEN
