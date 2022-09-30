@@ -2,17 +2,23 @@
 Arch 1 Game-project
 Noah El Menyari en Rens Mulder (1G Basecamp)
 """
-from re import I
-import time, sys, random
+import time, sys, random, utils
 from objects.location import Location
 from objects.item import Item
 import eventsmanager
 
+
+
 # Hier worden de belangrijke variabelen voor de game aangemaakt
+# Dit zijn de locaties
 locations = []
+# Dit is 'de' locatie waar de speler zich nu bevindt. Standaard is het een error locatie.
 location = Location("NO0", "Er is iets fout gegaan tijdens het opzetten van de game.")
+# Dit zijn alle items die een speler bezit.
 inventory = []
+# Dit zijn alle globale commando's
 commands = []
+# Dit is data die tijdens de game veranderd die het spel kunnen veranderen (daarom ook 'gamechangers').
 gamechangers = {
     "used_zuurstoftank": False,
     "used_parachute": False,
@@ -21,6 +27,9 @@ gamechangers = {
     "opened_hek": False
 }
 
+
+
+# Registraties van locaties en commando's en events en items en gewoon alles ================================================
 
 # Hier worden componenten zoals locatie's geregistreerd
 def register_locations():
@@ -68,32 +77,9 @@ def register_events():
     eventsmanager.register_event(location='all', condition='location.getName() != "bostopzuid" and gamechangers["passed_berenval"] == True and gamechangers["used_parachute"] == False', function=lambda: eventsmanager.end_game_bad("Je verloor te veel bloed en stierf een pijnlijke dood."))
     eventsmanager.register_event(location='all', condition='location.getName() != "bostopzuid" and gamechangers["passed_berenval"] == True and gamechangers["used_bacardi"] == False', function=lambda: eventsmanager.end_game_bad("Je wonden waren geïnfecteerd, je bent gestorven aan bloedvergiftiging"))
 
-def check_inventory():
-    """Dit checkt of de speler een item in zijn inventory heeft"""
-    if(len(inventory) == 0):
-        print("Je hebt niets in je inventory.")
-    else:
-        print("Je hebt de volgende items in je inventory:")
-        for item in inventory:
-            print(item.getName())
-
-def pak(itemname):
-    """Dit pakt een item op"""
-    item = location.getItem(itemname)
-    if item is not None:
-        inventory.append(item)
-        location.items.remove(item)
-        register_global_command("onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
-        if item.getName() == "bacardi":
-            register_command(get_location("bostopzuid"), 'drink ' + item.getName(), "drink('" + item.getName() + "')", ["d " + item.getName(), "at " + item.getName() ]) #beetje lelijk maja
-        location.removeCommand("pak " + item.getName()) # Zorgt ervoor dat de speler niet twee keer hetzelfde item kan oppakken
-        if item.isUsable():
-            register_global_command("gebruik " + item.getName(), lambda: gebruik(item), ["g " + item.getName(), "gebruik " + item.getName(), "use " + item.getName()])
-
-        print("Je hebt het item(" + item.getName() + ") opgepakt.")
-    else:
-        print("Je kan dit item niet oppakken.")
-        
+def register_location(name, description):
+    """Dit registreert een locatie"""
+    locations.append(Location(name, description))  
 
 def removeCommand(name):
     """Dit verwijdert een commando"""
@@ -104,8 +90,13 @@ def removeCommand(name):
     if theCommand is not None:
         commands.remove(theCommand)
         
+# Einde registraties ============================================================================================================
+
+
+# Spelerfuncties beginnen hier =================================================================================================
+
 def drink(itemname):
-    """Hiermee drink je een item... eigenlijk maar 1 item"""
+    """Hiermee drink je een item... eigenlijk maar 1 item (bacardiiiiiii - Rens)"""
     theitem = None
     for item in inventory:
         if item.getName() == itemname:
@@ -215,7 +206,87 @@ Teleurgesteld sluit je de app. Je wilt een foto maken maar het is een Android. U
     else:
         print("Je kan dit item niet gebruiken.")
 
-# Hier komt grotendeels de game logica
+def trap_de_walvis():
+    print("Je trapte de walvis, je bent een monster!")
+
+def check_inventory():
+    """Dit checkt of de speler een item in zijn inventory heeft"""
+    if(len(inventory) == 0):
+        print("Je hebt niets in je inventory.")
+    else:
+        print("Je hebt de volgende items in je inventory:")
+        for item in inventory:
+            print(item.getName())
+
+def pak(itemname):
+    """Dit pakt een item op"""
+    item = location.getItem(itemname)
+    if item is not None:
+        inventory.append(item)
+        location.items.remove(item)
+        register_global_command("onderzoek " + item.getName(), lambda: examine(item), ["o " + item.getName(), "onderzoek " + item.getName(), "onderzoek " + item.getName()])
+        if item.getName() == "bacardi":
+            register_command(get_location("bostopzuid"), 'drink ' + item.getName(), "drink('" + item.getName() + "')", ["d " + item.getName(), "at " + item.getName() ]) #beetje lelijk maja
+        location.removeCommand("pak " + item.getName()) # Zorgt ervoor dat de speler niet twee keer hetzelfde item kan oppakken
+        if item.isUsable():
+            register_global_command("gebruik " + item.getName(), lambda: gebruik(item), ["g " + item.getName(), "gebruik " + item.getName(), "use " + item.getName()])
+
+        print("Je hebt het item(" + item.getName() + ") opgepakt.")
+    else:
+        print("Je kan dit item niet oppakken.")
+
+def move(direction):
+    """Dit verplaatst de speler naar een andere locatie"""
+    global location
+    if direction == "noord":
+        loc = location.getNorth()
+        if loc == '':
+            print("Je kan niet naar het noorden.")
+        else:
+            location = loc 
+            print("Je gaat naar het noorden...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
+    elif direction == "oost":
+        loc = location.getEast()
+        if loc == '':
+            print("Je kan niet naar het oosten.")
+        else: 
+            location = loc 
+            print("Je gaat naar het oosten...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
+    elif direction == "south":
+        loc = location.getSouth()
+        if loc == '':
+            print("Je kan niet naar het zuiden.")
+        else: 
+            location = loc 
+            print("Je gaat naar het zuiden...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
+            if location.getName() == "bostopzuid":
+                gamechangers["passed_berenval"] = True
+    elif direction == "west":
+        loc = location.getWest()
+        if loc == '':
+            print("Je kan niet naar het westen.")
+        else: 
+            location = loc 
+            print("Je gaat naar het westen...")
+            eventsmanager.check_events(location, inventory, gamechangers)
+            location.printDescription()
+
+def examine(item):
+    """Dit onderzoekt een item"""
+    if item in inventory:
+        print(item.info())
+    else:
+        print("Je kan dit item niet onderzoeken.")
+
+# Spelerfuncties eindigen hier =================================================================================================
+
+# Voorbereidingen van locaties beginnen hier ===================================================================================
 def prepare_all_locations():
     """Dit voert alle voorbereidende opdrachten uit voor alle locaties"""
 
@@ -261,7 +332,7 @@ def prepare_bostop():
     for item in bostop.items:
         itemname = item.getName()
         register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
-    #register_command(bostop, 'trap walvis') dit moet nog gefixt worden
+    register_command(bostop, 'trap walvis', lambda: trap_de_walvis(), [])
 
 def prepare_klifhuis():
     """Dit voert alle voorbereidende opdrachten uit voor de klifhuis locatie"""
@@ -286,9 +357,6 @@ def prepare_dehethek():
     """Dit voert alle voorbereidende opdrachten uit voor de dehet hek locatie"""
     dehethek = get_location("dehethek")
     dehethek.setNorth(get_location("bostopzuid"))
-    #if gamechangers["opened_hek"] == True:
-     #   dehethek.setEast(get_location("appiebos"))
-      #  dehethek.setWest(get_location("klifsprong"))
     # register_command(dehethek) command om t hek op te klimmen  
 
 
@@ -331,12 +399,7 @@ def prepare_tovenaar():
     tovenaar = get_location("tovenaar")
     tovenaar.setNorth(get_location("henk"))
 
-def examine(item):
-    """Dit onderzoekt een item"""
-    if item in inventory:
-        print(item.info())
-    else:
-        print("Je kan dit item niet onderzoeken.")
+# Voorbereidingen van locaties eindigen hier ==============================================================================
 
 def print_help():
     """Geeft een lijst met commando's die de speler kan gebruiken"""
@@ -346,53 +409,6 @@ def print_help():
     for command in commands:
         print('-',command["name"])
     print('\n')
-
-def move(direction):
-    """Dit verplaatst de speler naar een andere locatie"""
-    global location
-    if direction == "noord":
-        loc = location.getNorth()
-        if loc == '':
-            print("Je kan niet naar het noorden.")
-        else:
-            location = loc 
-            print("Je gaat naar het noorden...")
-            eventsmanager.check_events(location, inventory, gamechangers)
-            location.printDescription()
-    elif direction == "oost":
-        loc = location.getEast()
-        if loc == '':
-            print("Je kan niet naar het oosten.")
-        else: 
-            location = loc 
-            print("Je gaat naar het oosten...")
-            eventsmanager.check_events(location, inventory, gamechangers)
-            location.printDescription()
-    elif direction == "south":
-        loc = location.getSouth()
-        if loc == '':
-            print("Je kan niet naar het zuiden.")
-        else: 
-            location = loc 
-            print("Je gaat naar het zuiden...")
-            eventsmanager.check_events(location, inventory, gamechangers)
-            location.printDescription()
-            if location.getName() == "bostopzuid":
-                gamechangers["passed_berenval"] = True
-    elif direction == "west":
-        loc = location.getWest()
-        if loc == '':
-            print("Je kan niet naar het westen.")
-        else: 
-            location = loc 
-            print("Je gaat naar het westen...")
-            eventsmanager.check_events(location, inventory, gamechangers)
-            location.printDescription()
-
-
-def register_location(name, description):
-    """Dit registreert een locatie"""
-    locations.append(Location(name, description))
 
 def get_location(name):
     """Dit zoekt een locatie op"""
@@ -455,9 +471,26 @@ def gameloop():
             print('\n')
 
 
+def print_title():
+    """Dit print de titel van de game"""
+    print(r"""
+___________.__                            .__           .___                                               .___      
+\__    ___/|  |__   ____   __  _  __ ____ |__|______  __| _/   ____   ______ ____ _____  ___________     __| _/____  
+  |    |   |  |  \_/ __ \  \ \/ \/ // __ \|  \_  __ \/ __ |  _/ __ \ /  ___// ___\\__  \ \____ \__  \   / __ |/ __ \ 
+  |    |   |   Y  \  ___/   \     /\  ___/|  ||  | \/ /_/ |  \  ___/ \___ \\  \___ / __ \|  |_> > __ \_/ /_/ \  ___/ 
+  |____|   |___|  /\___  >   \/\_/  \___  >__||__|  \____ |   \___  >____  >\___  >____  /   __(____  /\____ |\___  >
+                \/     \/               \/               \/       \/     \/     \/     \/|__|       \/      \/    \/ 
+
+    """)
+    time.sleep(2)
+    utils.slow_type("Gemaakt door Noah El Menyari en Rens Mulder voor Basecamp 2022 aan Hogeschool Rotterdam")
+    time.sleep(2)
+    utils.clear()
+
 
 def main():
     """Dit is de main functie van de game"""
+    # print_title() <-- uncomment deze regel om de titel te laten zien
     register_locations() # Registreert alle locaties
     prepare_all_locations() # Zet North, South, East en West, en items in de locaties
     register_global_commands() # Registreert alle globale commando's

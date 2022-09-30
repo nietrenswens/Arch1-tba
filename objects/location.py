@@ -57,10 +57,10 @@ class Location:
         self.commands = []
         self.items = []
         if name == 'start':
-            starttext = "Je ontwaakt uit een diepe slaap. Je hoort een scherpe piep in je oren en alles doet in principe pijn.\
-\nWaarom lig je daar? Je herinnert je het parachute springen uit het vliegtuig, de scherpe duw die je in je rug\
-\nkreeg en je parachute die niet open wilde gaan. Het is een wonder dat je nog leeft. Je voelt je wazig en je kan\
-\nmaar moeilijk ademen. (tip: weet je niet hoe je verder moet? Typ dan 'help' in)"
+            starttext = """Je ontwaakt uit een diepe slaap. Je hoort een scherpe piep in je oren en alles doet in principe pijn.
+Waarom lig je daar? Je herinnert je het parachute springen uit het vliegtuig, de scherpe duw die je in je rug
+kreeg en je parachute die niet open wilde gaan. Het is een wonder dat je nog leeft. Je voelt je wazig en je kan
+maar moeilijk ademen. (tip: weet je niet hoe je verder moet? Typ dan 'help' in)"""
             utils.slow_type(starttext)
             print('\n')
             time.sleep(2)
