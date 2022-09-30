@@ -11,3 +11,6 @@ def slow_type(t):
             time.sleep(rand*10.0/speed)
         sys.stdout.write(l)
         sys.stdout.flush()
+
+def clear():
+    print("\033c", end="")

@@ -2,7 +2,7 @@
 Arch 1 Game-project
 Noah El Menyari en Rens Mulder (1G Basecamp)
 """
-import time, sys, random
+import time, sys, random, utils
 from objects.location import Location
 from objects.item import Item
 import eventsmanager
@@ -162,6 +162,9 @@ def gebruik(item):
     else:
         print("Je kan dit item niet gebruiken.")
 
+def trap_de_walvis():
+    print("Je trapte de walvis, je bent een monster!")
+
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
     if(len(inventory) == 0):
@@ -284,7 +287,7 @@ def prepare_bostop():
     for item in bostop.items:
         itemname = item.getName()
         register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
-    #register_command(bostop, 'trap walvis') dit moet nog gefixt worden
+    register_command(bostop, 'trap walvis', lambda: trap_de_walvis(), [])
 
 def prepare_klifhuis():
     """Dit voert alle voorbereidende opdrachten uit voor de klifhuis locatie"""
@@ -400,9 +403,26 @@ def gameloop():
             print('\n')
 
 
+def print_title():
+    """Dit print de titel van de game"""
+    print(r"""
+___________.__                            .__           .___                                               .___      
+\__    ___/|  |__   ____   __  _  __ ____ |__|______  __| _/   ____   ______ ____ _____  ___________     __| _/____  
+  |    |   |  |  \_/ __ \  \ \/ \/ // __ \|  \_  __ \/ __ |  _/ __ \ /  ___// ___\\__  \ \____ \__  \   / __ |/ __ \ 
+  |    |   |   Y  \  ___/   \     /\  ___/|  ||  | \/ /_/ |  \  ___/ \___ \\  \___ / __ \|  |_> > __ \_/ /_/ \  ___/ 
+  |____|   |___|  /\___  >   \/\_/  \___  >__||__|  \____ |   \___  >____  >\___  >____  /   __(____  /\____ |\___  >
+                \/     \/               \/               \/       \/     \/     \/     \/|__|       \/      \/    \/ 
+
+    """)
+    time.sleep(2)
+    utils.slow_type("Gemaakt door Noah El Menyari en Rens Mulder voor Basecamp 2022 aan Hogeschool Rotterdam")
+    time.sleep(2)
+    utils.clear()
+
 
 def main():
     """Dit is de main functie van de game"""
+    # print_title() <-- uncomment deze regel om de titel te laten zien
     register_locations() # Registreert alle locaties
     prepare_all_locations() # Zet North, South, East en West, en items in de locaties
     register_global_commands() # Registreert alle globale commando's
