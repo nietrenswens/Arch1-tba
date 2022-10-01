@@ -34,17 +34,17 @@ gamechangers = {
 # Hier worden componenten zoals locatie's geregistreerd
 def register_locations():
     """Dit registreert de locaties van de game"""
-    register_location("start", "")
-    register_location("klif", "Het pad lijkt hier abrupt te stoppen, een klif. Je kijkt naar beneden. Het is te hoog om de grond te zien.")
+    register_location("start", "Dit lijkt de top van de berg te zijn. Richting het oosten lijkt er een pad te zijn. Richting het noorden zie je een klif. Het zuiden en westen zijn dichtgegroeid met bomen.")
+    register_location("klif", "Het pad lijkt hier abrupt te stoppen, een klif. Je kijkt naar beneden. Het is te hoog om de grond te zien. Richting het zuiden zie je een plek wat de top van de berg lijkt te zijn")
     register_location("bostop", "Je loopt een bos in. Het is donker maar iets verderop hoor je een vreemd gehuil....\nJe loopt verder... Het gehuil wordt steeds luider.\nAchter een gigantische steen ligt een gestrande walvis. \
-Walvis: '..... h .. eeel p..... \n...\n..  please ...... make it stop....'")
+Walvis: '..... h .. eeel p..... \n...\n..  please ...... make it stop....' Richting het westen zie je een pad dat omhoog loopt. Richting het zuiden zie je een pad het bos in leidt. Richting het oosten zie je de bomen minderen en lijk je een huisje te zien.")
     register_location("klifhuis", "Iets verderop zie je een kleine chalet staan. 'Dit zou het echt goed doen op AirBnB', denk je bij jezelf. Je opent de deur...\n\
 Er staan geen meubels in de chalet.")
     register_location("bostopzuid", "Je loopt verder naar beneden door het bos. Je wordt omringd door de groene natuur en voelt de rust zich over je lichaam wassen...\
 \nIneens voel je iets scherps om je been klemmen... 'AUAAAA' schreeuw je uit. Wanneer je naar beneden kijkt zie je dat je volop in een berenval bent gestapt.\
 \n...Gelukkig heb je dit een keer op Discovery Channel gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag.\
-\nDe berenval opent en je haalt voorzichtig je been er uit... Je bloedt echter flink. Je voelt je lichtjes in je hoofd.")
-    register_location("dehethek", "Verder het bos in staat voor je ineens een enorm hek. Aan de opening hangt een slot.")
+\nDe berenval opent en je haalt voorzichtig je been er uit... Je bloedt echter flink. Je voelt je lichtjes in je hoofd. Richting het zuiden zie je een pad dat dieper het bos in leidt. Richting het noorden zie je een pad wat naar een minderbegroeid deel van het bos lijkt te gaan.")
+    register_location("dehethek", "Verder het bos in staat voor je ineens een enorm hek. Aan de opening hangt een slot. Je kan alleen terug richting het noorden, tenzij het hek open kan.")
     register_location("appiebos", "Dieper in het bos is het nogal donker. Het lijkt hier dood te lopen.")
     register_location("klifsprong", "Iets verderop kom je weer bij een klif uit... Het lijkt erop dat dit de enige weg van de berg af is.")
     register_location("henk", "Pas wanneer je met beide benen op de grond staat kijk je op en zie je een heel bekend gezicht... HENK...\
@@ -148,13 +148,14 @@ def gebruik(item):
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
+                location.setDescription("Je bent in het bos. Je ziet de berenval nog liggen waar je in bent getrapt. Richting het zuiden zie je een pad dat dieper het bos in leidt. Richting het noorden zie je een pad wat naar een minderbegroeid deel van het bos lijkt te gaan.")
             else:
                 print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "tak":
             if location.getName() == "bostop":
                 utils.slow_type("Je grijpt naar de tak en valt bijna om van het gewicht. Met al je kracht zwaai je hem de lucht in en doorboor je het hart van de walvis.\
 \nHet gehuil van de walvis sterft langzaam uit. ")
-                location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg.")
+                location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg. Richting het westen zie je een pad dat omhoog loopt. Richting het zuiden zie je een pad het bos in leidt. Richting het oosten zie je de bomen minderen en lijk je een huisje te zien.")
                 inventory.remove(item)
                 location.addItem(Item(name="sleutel", description="In de borstkas van de walvis glimt iets... Het lijkt op een sleutel.", held_description="Een sleutel. Er zit nog wat bloed op.", usable=True))
                 utils.slow_type(location.getItem("sleutel").getDescription())
@@ -169,7 +170,7 @@ def gebruik(item):
                 utils.slow_type("Je forceert de sleutel in het stroeve veroestte slot. *ching* Het slot opent.")
                 location.setEast(get_location("appiebos"))
                 location.setWest(get_location("klifsprong"))
-                location.setDescription("De bebloede sleutel hangt nog in het slot van het hek.")
+                location.setDescription("Je ziet het open hek, achter het hek scheiden de wegen. Richting het oosten zie je het pad dichter het bos in lopen. Richting het westen lijk je een klif te zien. Richting het noorden zie je meer bos.")
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
@@ -208,6 +209,7 @@ def gebruik(item):
                 location.setDescription("Henks lichaam lijkt in het niets te zijn verdwenen...")
                 location.setNorth(get_location("rekenmachinebos"))
                 location.setSouth(get_location("tovenaar"))
+                location.setDescription("Op de grond zie je Henk liggen. Hij lijkt best wel dood. Was geweld wel echt de oplossing? (Ja, ja dat was het) Richting het zuiden zie je een open grasvlakte waar je iemand lijkt te zien. Richting het noorden zie je meer bomen. Richting het oosten zie je de hoge klif waar je van af was gesprongen.")
             else:
                 print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "vuisten":

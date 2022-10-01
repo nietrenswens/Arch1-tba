@@ -41,6 +41,9 @@ class Item:
 
     def getDescription(self):
         return self.description
+
+    def setDescription(self, description):
+        self.description = description
     
     def isUsable(self):
         return self.usable
