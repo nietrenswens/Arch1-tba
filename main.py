@@ -50,8 +50,14 @@ Er staan geen meubels in de chalet.")
     register_location("henk", "Pas wanneer je met beide benen op de grond staat kijk je op en zie je een heel bekend gezicht... HENK...\
 \nIneens herinner je je alles. 'Jij was het.... door jou zit ik hier al dagen vast... Jij hebt mij uit het vliegtuig geduwd.\
 \n'Ik kan het uitle-', Henk kan zijn zin niet afmaken. Je rent op hem af klaar om te vechten.")
-    register_location("rekenmachinebos", "rekenen bitch")
-    register_location("tovenaar", "ti ta tovenaar")
+    register_location("rekenmachinebos", "Overal waar je heen gaat lijkt alleen maar naar meer bos te leiden. Ook dit lijkt weer op een dood einde.")
+    register_location("tovenaar", "Je loopt verder naar beneden... Het lijkt erop dat je met dit pad eindelijk de berg afkomt.\
+\nJe stopt abrupt met lopen, maar dit gaat tegen je wil in. Het voelt plots alsof er blokken ijzer aan je beide benen hangen.\
+\nJe kijkt omhoog en ziet een schimmig silhouette staan. Het silhouette komt dichterbij en langzamerhand zie je het gezicht van de man.\
+\nHij heeft een lange punthoed op en een overduidelijk neppe baard op zijn gezicht gelijmd...\
+\n'Ik ben de almachtige tovenaar van de berg en niemand verlaat deze berg zonder mijn raadsel op te lossen' schreeuwt hij. \nDit zou best intimiderend zijn als hij geen nepbaard op had.\
+\n'Om langs mij te komen moet je een eeuwenoud raadsel oplossen, maar enkele zielen hebben dit raadsel kunnen beantwoorden. Ik geef je 1 kans. \nHet raadsel luidt als volgt...\
+\n..........    2  +  2  =  ?")
 
 def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
@@ -109,7 +115,7 @@ def gebruik(item):
     """Dit gebruikt een item"""
     if item in inventory:
         if item.getName() == "zuurstoftank":
-            print("Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp en je voelt je langzaam beter.")
+            utils.slow_type("Met je laatste kracht reik je naar het masker van de zuurstoftank. Je kan weer ademen. Je zicht is weer scherp en je voelt je langzaam beter.")
             gamechangers["used_zuurstoftank"] = True
             inventory.remove(item)
             removeCommand("gebruik " + item.getName())
@@ -117,7 +123,7 @@ def gebruik(item):
             removeCommand("onderzoek " + item.getName())
         elif item.getName() == "jonko":
             if location.getName() == "klifhuis":
-                print("Je lit de jonko en neemt een paar hijsjes. Je voelt de stress je lichaam verlaten... met rode ogen en een zwaar hoofd druk je hem uit.")
+                utils.slow_type("Je lit de jonko en neemt een paar hijsjes. Je voelt de stress je lichaam verlaten... met rode ogen en een zwaar hoofd druk je hem uit.")
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
@@ -129,7 +135,7 @@ def gebruik(item):
  In plaats van te zweven donder je als een steen van de berg af en stierf je een pijnlijke dood.")
             elif location.getName() == "bostopzuid":
                 gamechangers["used_parachute"] = True
-                print("Dit kan je voor je wond gebruiken. Je wikkelt de parachute strak om je been heen. Het is misschien niet steriel maar het zal het bloeden stoppen voor nu.")
+                utils.slow_type("Dit kan je voor je wond gebruiken. Je wikkelt de parachute strak om je been heen. Het is misschien niet steriel maar het zal het bloeden stoppen voor nu.")
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
@@ -138,7 +144,7 @@ def gebruik(item):
         elif item.getName() == "bacardi":
             if location.getName() == "bostopzuid":
                 gamechangers["used_bacardi"] = True
-                print("Je rolt je broek op en draait de dop van de fles open. Je neemt een flinke slok en gooit de rest over je wond. Je bijt bijna je kiezen kapot van de pijn... Je wond is schoon.")
+                utils.slow_type("Je rolt je broek op en draait de dop van de fles open. Je neemt een flinke slok en gooit de rest over je wond. Je bijt bijna je kiezen kapot van de pijn... \nJe wond is schoon.")
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
@@ -146,11 +152,12 @@ def gebruik(item):
                 print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "tak":
             if location.getName() == "bostop":
-                print("Je grijpt naar de tak en valt bijna om van het gewicht. Met al je kracht zwaai je hem de lucht in en doorboor je het hart van de walvis. Het gehuil van de walvis sterft langzaam uit.")
-                location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg.") #leuk extra tekstje als ie terugkomt
+                utils.slow_type("Je grijpt naar de tak en valt bijna om van het gewicht. Met al je kracht zwaai je hem de lucht in en doorboor je het hart van de walvis.\
+\nHet gehuil van de walvis sterft langzaam uit. ")
+                location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg.")
                 inventory.remove(item)
-                location.addItem(Item(name="sleutel", description="In de borstkas van de walvis glimt iets... Het lijkt op een sleutel.", usable=True))
-                print(location.getItem("sleutel").getDescription())
+                location.addItem(Item(name="sleutel", description="In de borstkas van de walvis glimt iets... Het lijkt op een sleutel.", held_description="Een sleutel. Er zit nog wat bloed op.", usable=True))
+                utils.slow_type(location.getItem("sleutel").getDescription())
                 register_command(location, 'pak sleutel', "pak('sleutel')", ["p sleutel", "pick up sleutel", "pick up key"])
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
@@ -159,32 +166,38 @@ def gebruik(item):
         elif item.getName() == "sleutel":
             if location.getName() == "dehethek":
                 gamechangers["opened_hek"] = True
-                print("Je forceert de sleutel in het stroeve veroestte slot. *ching* Het slot opent.")
+                utils.slow_type("Je forceert de sleutel in het stroeve veroestte slot. *ching* Het slot opent.")
                 location.setEast(get_location("appiebos"))
                 location.setWest(get_location("klifsprong"))
+                location.setDescription("De bebloede sleutel hangt nog in het slot van het hek.")
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
             else:
                 print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "mobiel":
-            print("Je pakt het mobieltje. Geen bereik. Je opent de enige app die op de mobiel lijkt te staan, Subway Surfers. \n'!!! You need an internet connection to play this game !!!!'\n\
-Teleurgesteld sluit je de app. Je wilt een foto maken maar het is een Android. Uit frustratie gooi je het mobieltje tegen een boom.")
+            utils.slow_type("Je pakt het mobieltje. Geen bereik. Je opent de enige app die op de mobiel lijkt te staan, Subway Surfers.\n")
+            print("'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'")
+            print("'!!! You need an internet connection to play this game !!!!'")
+            print("'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'")
+            utils.slow_type("Teleurgesteld sluit je de app. Je wilt een foto maken maar het is een Android. Uit frustratie gooi je het mobieltje tegen een boom.")
             inventory.remove(item)
             removeCommand("gebruik " + item.getName())
             removeCommand("onderzoek " + item.getName())
         elif item.getName() == "tas":
             if location.getName() == "klifsprong":
-                print("Je hebt vroeger bij de Albert Heijn gewerkt en weet dat deze tassen van het sterkste gerecycelde plastic worden gemaakt. Je pakt de handvaten stevig vast en springt met je armen in de lucht van de klif.")
+                utils.slow_type("Je hebt vroeger bij de Albert Heijn gewerkt en weet dat deze tassen van het sterkste gerecycelde plastic worden gemaakt. Je pakt de handvaten stevig vast en springt met je armen in de lucht van de klif.\n")
                 location.setWest(get_location("henk"))
                 move("west")
                 inventory.remove(item)
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
+            else:
+                print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "steen":
             if location.getName() == "henk":
-                print("Henk is best breed dus je gebruikt de steen als wapen. Je gooit de steen met chirurgische preciesie op zijn slaap. Henk valt neer.\
-/nVoordat het leven Henks lichaam verlaat mompelt hij zijn laatste woorden 'J..e...... moeder.......'\nYOU DEFEATED HENK.")
+                utils.slow_type("Henk is best breed dus je gebruikt de steen als wapen. Je gooit de steen met chirurgische preciesie op zijn slaap. Henk valt neer.\
+\nVoordat het leven Henks lichaam verlaat mompelt hij zijn laatste woorden...               \n'J..e...... moeder.......'\nYOU DEFEATED HENK.")
                 inventory.remove(item)
                 for item in inventory:
                     if item.getName() == "vuisten":
@@ -192,6 +205,7 @@ Teleurgesteld sluit je de app. Je wilt een foto maken maar het is een Android. U
                         removeCommand("gebruik " + item.getName())
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
+                location.setDescription("Henks lichaam lijkt in het niets te zijn verdwenen...")
                 location.setNorth(get_location("rekenmachinebos"))
                 location.setSouth(get_location("tovenaar"))
             else:
@@ -201,6 +215,15 @@ Teleurgesteld sluit je de app. Je wilt een foto maken maar het is een Android. U
                 eventsmanager.end_game_bad("Je rent op Henk af en begint wild te slaan. Je was alleen vergeten dat Henk Basic gaat. Henk slaat je K.O. met één stomp.")
             else:
                 print("Je kan je vuisten hier niet gebruiken.")
+        elif item.getName() == "rekenmachine":
+            if location.getName() == "tovenaar":
+                utils.slow_type("Je haalt je rekenmachine tevoorschijn. De tovenaar schrikt. Met beide handen pak je hem vast en tik je 2 + 2 in....\
+\n'Neeee' schreeuwt de tovenaar nog uit maar het is te laat. Je hebt al op de = gedrukt. Op het scherm van de rekenmachine komt heel groot '4' te staan.\
+\nJe kijkt omhoog en de tovenaar lijkt in het niets te zijn verdwenen... De bomen die eerst je zicht naar beneden blokkeerden zijn weg...\
+\nOnderaan de berg zie je je moeders auto staan. Ineens heb je totaal geen herinnering van hoe je onderaan deze berg komt, maar het voelt alsof je erg lang bent weggeweest...")
+                eventsmanager.end_game_win()
+            else:
+                print("Je tikt 58008 in op de rekenmachine.")
         else:
             print("Je kan dit item niet gebruiken.")
     else:
@@ -208,6 +231,11 @@ Teleurgesteld sluit je de app. Je wilt een foto maken maar het is een Android. U
 
 def trap_de_walvis():
     print("Je trapte de walvis, je bent een monster!")
+
+def reken():
+    """Dit beantwoordt de rekensom van de tovenaar"""
+    eventsmanager.end_game_bad("Tovenaar: 'Serieus? Ik had beter van je verwacht. Nu moet ik je ziel hier voor eeuwig vasthouden enzo en daar had ik eigenlijk helemaal geen zin in.'")
+
 
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
@@ -328,17 +356,18 @@ def prepare_bostop():
     bostop.setWest(get_location("start"))
     bostop.setEast(get_location("klifhuis"))
     bostop.setSouth(get_location("bostopzuid"))
-    bostop.addItem(Item(name="tak", description="Een grote scherpe tak naast de walvis...", usable=True))
+    bostop.addItem(Item(name="tak", description="Een grote scherpe tak naast de walvis...", held_description="Een tak. Hij is erg zwaar.", usable=True))
     for item in bostop.items:
         itemname = item.getName()
         register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
-    register_command(bostop, 'trap walvis', lambda: trap_de_walvis(), [])
+    register_command(bostop, 'trap walvis', lambda: trap_de_walvis(), ["kick walvis"])
 
 def prepare_klifhuis():
     """Dit voert alle voorbereidende opdrachten uit voor de klifhuis locatie"""
     klifhuis = get_location("klifhuis")
     klifhuis.setWest(get_location("bostop"))
-    klifhuis.addItem(Item(name="jonko", description="Naast het raampje zie je een dikke jonko liggen naast een verroestte Zippo aansteker.", usable=True))
+    klifhuis.addItem(Item(name="jonko", description="Naast het raampje zie je een dikke jonko liggen naast een verroestte Zippo aansteker.", held_description="Een jonko. Hij is niet insi gedraaid...", usable=True))
+
     for item in klifhuis.items:
         itemname = item.getName()
         register_command(klifhuis, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -348,7 +377,7 @@ def prepare_bostopzuid():
     bostopzuid = get_location("bostopzuid")
     bostopzuid.setNorth(get_location("bostop"))
     bostopzuid.setSouth(get_location("dehethek"))
-    bostopzuid.addItem(Item(name="bacardi", description="Uit de grond steekt een fles met een rode dop. Het is een fles Bacardi Lemon.", usable=True))
+    bostopzuid.addItem(Item(name="bacardi", description="Uit de grond steekt een fles met een rode dop. Het is een fles Bacardi Lemon.", held_description="Bacardi Lemon. Het label is vervaagd.", usable=True))
     for item in bostopzuid.items:
         itemname = item.getName()
         register_command(bostopzuid, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -365,8 +394,8 @@ def prepare_appiebos():
     """Dit voert alle voorbereidende opdrachten uit voor de appiebos locatie"""
     appiebos = get_location("appiebos")
     appiebos.setWest(get_location("dehethek"))
-    appiebos.addItem(Item(name="mobiel", description="In het gras zie je iets oplichten en hoor je een bekend getril. Een mobiel.", usable=True))
-    appiebos.addItem(Item(name="tas", description="aan de tak van een boom iets blauws. Het is een Albert Heijn tasje.", usable=True))
+    appiebos.addItem(Item(name="mobiel", description="In het gras zie je iets oplichten en hoor je een bekend getril. Een mobiel.", held_description="Een mobiel. Het scherm is gebarsten.", usable=True))
+    appiebos.addItem(Item(name="tas", description="aan de tak van een boom iets blauws. Het is een Albert Heijn tasje.", held_description="Een AH tasje. Hij is nog in perfecte staat.", usable=True))
     for item in appiebos.items:
         itemname = item.getName()
         if itemname == "tas":
@@ -390,7 +419,10 @@ def prepare_henk():
 def prepare_rekenmachinebos():
     """Dit voert alle voorbereidende opdrachten uit voor de rekenmachinebos locatie"""
     rekenmachinebos = get_location("rekenmachinebos")
-    rekenmachinebos.addItem(Item(name="rekenmachine", description="...een rekenmachine", usable=True))
+    rekenmachinebos.addItem(Item(name="rekenmachine", description="Naast een boom zie je een muis met een GR zitten.", held_description="Een grafische rekenmachine. Hij werkt nog. Het schermpje is moeilijk leesbaar.", usable=True))
+    for item in rekenmachinebos.items:
+        itemname = item.getName()
+        register_command(rekenmachinebos, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
     rekenmachinebos.setSouth(get_location("henk"))
     
 
@@ -398,6 +430,9 @@ def prepare_tovenaar():
     """Dit voert alle voorbereidende opdrachten uit voor de tovenaar locatie"""
     tovenaar = get_location("tovenaar")
     tovenaar.setNorth(get_location("henk"))
+    register_command(tovenaar, '8', "reken()", ["acht"])
+    register_command(tovenaar, '3', "reken()", ["drie"])
+    register_command(tovenaar, '21', "reken()", ["eenentwintig"])
 
 # Voorbereidingen van locaties eindigen hier ==============================================================================
 
@@ -490,7 +525,7 @@ ___________.__                            .__           .___                    
 
 def main():
     """Dit is de main functie van de game"""
-    # print_title() <-- uncomment deze regel om de titel te laten zien
+    #print_title() #<-- uncomment deze regel om de titel te laten zien
     register_locations() # Registreert alle locaties
     prepare_all_locations() # Zet North, South, East en West, en items in de locaties
     register_global_commands() # Registreert alle globale commando's

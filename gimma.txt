@@ -200,7 +200,7 @@ WAT WIL JE DOEN
 Rekenmachinebos:
 "Overal waar je heen gaat lijkt alleen maar naar meer bos te leiden. Je hoort een vaag getik.. alsof iemand knopjes aan het indrukken is."
 "Je volgt het geluid naar een struik toe."
-"Je spiekt achter de struik en ziet een rat met een rekenmachine in zijn hand. Op het schermpje van de rekenmachine staat het getal 58008. Je vraagt je af waar een rat wiskunde voor nodig heeft." 
+"Je spiekt ." 
 WAT WIL JE DOEN
 1 Steel de rekenmachine van de rat
 2 go south
