@@ -24,7 +24,8 @@ gamechangers = {
     "used_parachute": False,
     "passed_berenval": False,
     "used_bacardi": False,
-    "opened_hek": False
+    "opened_hek": False,
+    "tried_tovenaar": False
 }
 
 
@@ -45,8 +46,8 @@ Er staan geen meubels in de chalet.")
 \n...Gelukkig heb je dit een keer op Discovery Channel gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag.\
 \nDe berenval opent en je haalt voorzichtig je been er uit... Je bloedt echter flink. Je voelt je lichtjes in je hoofd. Richting het zuiden zie je een pad dat dieper het bos in leidt. Richting het noorden zie je een pad wat naar een minderbegroeid deel van het bos lijkt te gaan.")
     register_location("dehethek", "Verder het bos in staat voor je ineens een enorm hek. Aan de opening hangt een slot. Je kan alleen terug richting het noorden, tenzij het hek open kan.")
-    register_location("appiebos", "Dieper in het bos is het nogal donker. Het lijkt hier dood te lopen.")
-    register_location("klifsprong", "Iets verderop kom je weer bij een klif uit... Het lijkt erop dat dit de enige weg van de berg af is.")
+    register_location("appiebos", "Dieper in het bos is het nogal donker. Het lijkt hier dood te lopen. Je kan alleen richting het westen terug.")
+    register_location("klifsprong", "Iets verderop kom je weer bij een klif uit... Het lijkt erop dat dit de enige weg van de berg af is. Richting het oosten zie je de poort.")
     register_location("henk", "Pas wanneer je met beide benen op de grond staat kijk je op en zie je een heel bekend gezicht... HENK...\
 \nIneens herinner je je alles. 'Jij was het.... door jou zit ik hier al dagen vast... Jij hebt mij uit het vliegtuig geduwd.\
 \n'Ik kan het uitle-', Henk kan zijn zin niet afmaken. Je rent op hem af klaar om te vechten.")
@@ -206,7 +207,7 @@ def gebruik(item):
                         removeCommand("gebruik " + item.getName())
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
-                location.setDescription("Henks lichaam lijkt in het niets te zijn verdwenen...")
+                # location.setDescription("Henks lichaam lijkt in het niets te zijn verdwenen...")
                 location.setNorth(get_location("rekenmachinebos"))
                 location.setSouth(get_location("tovenaar"))
                 location.setDescription("Op de grond zie je Henk liggen. Hij lijkt best wel dood. Was geweld wel echt de oplossing? (Ja, ja dat was het) Richting het zuiden zie je een open grasvlakte waar je iemand lijkt te zien. Richting het noorden zie je meer bomen. Richting het oosten zie je de hoge klif waar je van af was gesprongen.")
@@ -236,7 +237,11 @@ def trap_de_walvis():
 
 def reken():
     """Dit beantwoordt de rekensom van de tovenaar"""
-    eventsmanager.end_game_bad("Tovenaar: 'Serieus? Ik had beter van je verwacht. Nu moet ik je ziel hier voor eeuwig vasthouden enzo en daar had ik eigenlijk helemaal geen zin in.'")
+    if gamechangers["tried_tovenaar"] == False:
+        gamechangers["tried_tovenaar"] = True
+        print("Tovenaar: 'Kom op! Je kan toch wel mijn simpele rekensom oplossen? Ik geef je nog één kans. Gebruik desnoods een hulpmiddel ofzo!'")
+    else:
+        eventsmanager.end_game_bad("Tovenaar: 'Serieus? Ik had beter van je verwacht. Nu moet ik je ziel hier voor eeuwig vasthouden enzo en daar had ik eigenlijk helemaal geen zin in.'")
 
 
 def check_inventory():
@@ -307,12 +312,13 @@ def move(direction):
             eventsmanager.check_events(location, inventory, gamechangers)
             location.printDescription()
 
-def examine(item):
+def examine(itemm):
     """Dit onderzoekt een item"""
-    if item in inventory:
-        print(item.info())
-    else:
-        print("Je kan dit item niet onderzoeken.")
+    for item in inventory:
+        if item.getName() == itemm.getName():
+            item.info()
+        else:
+            print("Je kan dit item niet onderzoeken.")
 
 # Spelerfuncties eindigen hier =================================================================================================
 
