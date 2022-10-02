@@ -25,7 +25,8 @@ gamechangers = {
     "passed_berenval": False,
     "used_bacardi": False,
     "opened_hek": False,
-    "tried_tovenaar": False
+    "tried_tovenaar": False,
+    "killed_walvis": False,
 }
 
 
@@ -60,7 +61,7 @@ Er staan geen meubels in de chalet. Richting het westen kan je terug lopen.")
 \n'Om langs mij te komen moet je een eeuwenoud raadsel oplossen, maar enkele zielen hebben dit raadsel kunnen beantwoorden. Ik geef je 1 kans. \nHet raadsel luidt als volgt...\
 \n..........    2  +  2  =  ?")
 
-def register_command(location: Location, name: str, function: function, aliases=[]):
+def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
     location.addCommand(name=name, function=function, aliases=aliases)
 
@@ -156,6 +157,7 @@ def gebruik(item: Item):
             if location.getName() == "bostop":
                 utils.slow_type("Je grijpt naar de tak en valt bijna om van het gewicht. Met al je kracht zwaai je hem de lucht in en doorboor je het hart van de walvis.\
 \nHet gehuil van de walvis sterft langzaam uit. ")
+                gamechangers["killed_walvis"] = True
                 location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg. Richting het westen zie je een pad dat omhoog loopt. Richting het zuiden zie je een pad het bos in leidt. Richting het oosten zie je de bomen minderen en lijk je een huisje te zien.")
                 inventory.remove(item)
                 location.addItem(Item(name="sleutel", description="In de borstkas van de walvis glimt iets... Het lijkt op een sleutel.", held_description="Een sleutel. Er zit nog wat bloed op.", usable=True))
@@ -197,7 +199,9 @@ def gebruik(item: Item):
             else:
                 print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "steen":
-            if location.getName() == "henk":
+            if location.getName() == "bostop" and not gamechangers["killed_walvis"]:
+                print("Je gooit de steen tegen de walvis. Walvis: 'Auw! Waarom de #&$% doe je dat?!' Je voelt je schuldig en pakt maar snel weer de steen op.")
+            elif location.getName() == "henk":
                 utils.slow_type("Henk is best breed dus je gebruikt de steen als wapen. Je gooit de steen met chirurgische preciesie op zijn slaap. Henk valt neer.\
 \nVoordat het leven Henks lichaam verlaat mompelt hij zijn laatste woorden...               \n'J..e...... moeder.......'\nYOU DEFEATED HENK.")
                 inventory.remove(item)
@@ -211,6 +215,8 @@ def gebruik(item: Item):
                 location.setNorth(get_location("rekenmachinebos"))
                 location.setSouth(get_location("tovenaar"))
                 location.setDescription("Op de grond zie je Henk liggen. Hij lijkt best wel dood. Was geweld wel echt de oplossing? (Ja, ja dat was het) Richting het zuiden zie je een open grasvlakte waar je iemand lijkt te zien. Richting het noorden zie je meer bomen. Richting het oosten zie je de hoge klif waar je van af was gesprongen.")
+            elif location.getName() == "bostopzuid" and not gamechangers["used_parachute"]:
+                print("Je wrijft met de steen over je wond. Het doet pijn. Wat had je verwacht?")
             else:
                 print("Je kan dit item hier niet gebruiken.")
         elif item.getName() == "vuisten":
@@ -228,6 +234,11 @@ def gebruik(item: Item):
                 eventsmanager.end_game_win()
             else:
                 print("Je tikt 58008 in op de rekenmachine.")
+        elif item.getName() == "spons":
+            if location.getName() == 'tovenaar':
+                print("Tovenaar: Haha heel grappig. Een natte spons, wat een grap. Los nu maar eerst mijn raadsel op voordat je grappig komt doen.")
+            else:
+                print("Je wast met de natte spons je gezicht. Je voelt je fris en fruitig. Je hebt geen idee waarom je dit doet.") 
         else:
             print("Je kan dit item niet gebruiken.")
     else:
@@ -318,8 +329,6 @@ def examine(asked_item):
     for item in inventory:
         if item.getName() == asked_item.getName():
             item.info()
-        else:
-            print("Je kan dit item niet onderzoeken.")
 
 # Spelerfuncties eindigen hier =================================================================================================
 
@@ -366,6 +375,7 @@ def prepare_bostop():
     bostop.setEast(get_location("klifhuis"))
     bostop.setSouth(get_location("bostopzuid"))
     bostop.addItem(Item(name="tak", description="Een grote scherpe tak naast de walvis...", held_description="Een tak. Hij is erg zwaar.", usable=True))
+    bostop.addItem(Item(name="spons", description="Uit een boomstronk steekt een spons.", held_description="Een natte spons. Hij is erg zwaar en nat. Waarom heb je hem opgepakt?", usable=True))
     for item in bostop.items:
         itemname = item.getName()
         register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
