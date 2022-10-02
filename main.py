@@ -224,6 +224,7 @@ def gebruik(item):
 \n'Neeee' schreeuwt de tovenaar nog uit maar het is te laat. Je hebt al op de = gedrukt. Op het scherm van de rekenmachine komt heel groot '4' te staan.\
 \nJe kijkt omhoog en de tovenaar lijkt in het niets te zijn verdwenen... De bomen die eerst je zicht naar beneden blokkeerden zijn weg...\
 \nOnderaan de berg zie je je moeders auto staan. Ineens heb je totaal geen herinnering van hoe je onderaan deze berg komt, maar het voelt alsof je erg lang bent weggeweest...")
+                time.sleep(2)
                 eventsmanager.end_game_win()
             else:
                 print("Je tikt 58008 in op de rekenmachine.")
@@ -312,10 +313,10 @@ def move(direction):
             eventsmanager.check_events(location, inventory, gamechangers)
             location.printDescription()
 
-def examine(itemm):
+def examine(asked_item):
     """Dit onderzoekt een item"""
     for item in inventory:
-        if item.getName() == itemm.getName():
+        if item.getName() == asked_item.getName():
             item.info()
         else:
             print("Je kan dit item niet onderzoeken.")
@@ -430,6 +431,8 @@ def prepare_rekenmachinebos():
     rekenmachinebos.addItem(Item(name="rekenmachine", description="Naast een boom zie je een muis met een GR zitten.", held_description="Een grafische rekenmachine. Hij werkt nog. Het schermpje is moeilijk leesbaar.", usable=True))
     for item in rekenmachinebos.items:
         itemname = item.getName()
+        if itemname == 'rekenmachine':
+            register_command(rekenmachinebos, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName(), "pak gr", "p gr", "pick up gr"])
         register_command(rekenmachinebos, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
     rekenmachinebos.setSouth(get_location("henk"))
     
@@ -469,7 +472,7 @@ def prepgame():
 
 def ask_for_command():
     """Vraagt om een commando"""
-    command = input("Wat wil je doen? ")
+    command = input("Wat wil je doen? ").strip().lower()
     return command
 
 def gameloop():
