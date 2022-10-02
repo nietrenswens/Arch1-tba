@@ -414,9 +414,9 @@ def prepare_klifsprong():
 def prepare_henk():
     """Dit voert alle voorbereidende opdrachten uit voor de henk locatie"""
     henk = get_location("henk")
-    vuistitem = Item(name="vuisten", description="Blote vuisten.", usable=True)
-    inventory.append(vuistitem)
-    register_command(henk, 'gebruik vuisten',  lambda: gebruik(vuistitem), ["g vuisten", "use vuisten", "sla henk", "hit henk", "g vuist", "use vuist"])
+    #vuistitem = Item(name="vuisten", description="Blote vuisten.", usable=True) dit s fout
+    #inventory.append(vuistitem)
+    #register_command(henk, 'gebruik vuisten',  lambda: gebruik(vuistitem), ["g vuisten", "use vuisten", "sla henk", "hit henk", "g vuist", "use vuist"])
 
 def prepare_rekenmachinebos():
     """Dit voert alle voorbereidende opdrachten uit voor de rekenmachinebos locatie"""
