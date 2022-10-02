@@ -533,7 +533,7 @@ ___________.__                            .__           .___                    
 
 def main():
     """Dit is de main functie van de game"""
-    #print_title() #<-- uncomment deze regel om de titel te laten zien
+    print_title() #<-- uncomment deze regel om de titel te laten zien
     register_locations() # Registreert alle locaties
     prepare_all_locations() # Zet North, South, East en West, en items in de locaties
     register_global_commands() # Registreert alle globale commando's
