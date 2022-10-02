@@ -49,6 +49,7 @@ __________           .___              __      __                               
 /____  >|   __/ \___  >____/\___  >___|  /                                                          
      \/ |__|        \/          \/     \/                                                           
 
+Dit spel is gemaakt door: Noah El Menyari en Rens Mulder uit 1G
     """)
     exit()
 
@@ -70,6 +71,7 @@ __________           .___              __      __                               
 /____  >|   __/ \___  >____/\___  >___|  /                                                          
      \/ |__|        \/          \/     \/                                                           
 
+Dit spel is gemaakt door: Noah El Menyari en Rens Mulder uit 1G
     """)
     exit()
 
