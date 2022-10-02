@@ -40,7 +40,7 @@ def register_locations():
     register_location("bostop", "Je loopt een bos in. Het is donker maar iets verderop hoor je een vreemd gehuil....\nJe loopt verder... Het gehuil wordt steeds luider.\nAchter een gigantische steen ligt een gestrande walvis. \
 Walvis: '..... h .. eeel p..... \n...\n..  please ...... make it stop....' Richting het westen zie je een pad dat omhoog loopt. Richting het zuiden zie je een pad het bos in leidt. Richting het oosten zie je de bomen minderen en lijk je een huisje te zien.")
     register_location("klifhuis", "Iets verderop zie je een kleine chalet staan. 'Dit zou het echt goed doen op AirBnB', denk je bij jezelf. Je opent de deur...\n\
-Er staan geen meubels in de chalet.")
+Er staan geen meubels in de chalet. Richting het westen kan je terug lopen.")
     register_location("bostopzuid", "Je loopt verder naar beneden door het bos. Je wordt omringd door de groene natuur en voelt de rust zich over je lichaam wassen...\
 \nIneens voel je iets scherps om je been klemmen... 'AUAAAA' schreeuw je uit. Wanneer je naar beneden kijkt zie je dat je volop in een berenval bent gestapt.\
 \n...Gelukkig heb je dit een keer op Discovery Channel gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag.\
