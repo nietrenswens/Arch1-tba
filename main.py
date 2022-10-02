@@ -60,7 +60,7 @@ Er staan geen meubels in de chalet.")
 \n'Om langs mij te komen moet je een eeuwenoud raadsel oplossen, maar enkele zielen hebben dit raadsel kunnen beantwoorden. Ik geef je 1 kans. \nHet raadsel luidt als volgt...\
 \n..........    2  +  2  =  ?")
 
-def register_command(location, name, function, aliases=[]):
+def register_command(location: Location, name: str, function: function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
     location.addCommand(name=name, function=function, aliases=aliases)
 
@@ -84,11 +84,11 @@ def register_events():
     eventsmanager.register_event(location='all', condition='location.getName() != "bostopzuid" and gamechangers["passed_berenval"] == True and gamechangers["used_parachute"] == False', function=lambda: eventsmanager.end_game_bad("Je verloor te veel bloed en stierf een pijnlijke dood."))
     eventsmanager.register_event(location='all', condition='location.getName() != "bostopzuid" and gamechangers["passed_berenval"] == True and gamechangers["used_bacardi"] == False', function=lambda: eventsmanager.end_game_bad("Je wonden waren geïnfecteerd, je bent gestorven aan bloedvergiftiging"))
 
-def register_location(name, description):
+def register_location(name: str, description: str):
     """Dit registreert een locatie"""
     locations.append(Location(name, description))  
 
-def removeCommand(name):
+def removeCommand(name: str):
     """Dit verwijdert een commando"""
     theCommand = None
     for command in commands:
@@ -102,7 +102,7 @@ def removeCommand(name):
 
 # Spelerfuncties beginnen hier =================================================================================================
 
-def drink(itemname):
+def drink(itemname: str):
     """Hiermee drink je een item... eigenlijk maar 1 item (bacardiiiiiii - Rens)"""
     theitem = None
     for item in inventory:
@@ -112,7 +112,7 @@ def drink(itemname):
     if theitem.getName() == "bacardi":
         eventsmanager.end_game_bad("Je opent de fles en neemt een slok. En nog een slok... en nog een slok. \nDe alcohol verdunt je bloed waardoor je nog sneller uitbloedt... De pijn vaagt langzaam weg en je sterft een vredige dood." )
 
-def gebruik(item):
+def gebruik(item: Item):
     """Dit gebruikt een item"""
     if item in inventory:
         if item.getName() == "zuurstoftank":
@@ -254,7 +254,7 @@ def check_inventory():
         for item in inventory:
             print(item.getName())
 
-def pak(itemname):
+def pak(itemname: str):
     """Dit pakt een item op"""
     item = location.getItem(itemname)
     if item is not None:
@@ -271,7 +271,7 @@ def pak(itemname):
     else:
         print("Je kan dit item niet oppakken.")
 
-def move(direction):
+def move(direction: str):
     """Dit verplaatst de speler naar een andere locatie"""
     global location
     if direction == "noord":
@@ -456,7 +456,7 @@ def print_help():
         print('-',command["name"])
     print('\n')
 
-def get_location(name):
+def get_location(name: str):
     """Dit zoekt een locatie op"""
     for location in locations:
         if location.getName() == name:
