@@ -229,11 +229,16 @@ def reken():
     else:
         eventsmanager.end_game_bad("Tovenaar: 'Serieus? Ik had beter van je verwacht. Nu moet ik je ziel hier voor eeuwig vasthouden enzo en daar had ik eigenlijk helemaal geen zin in.'")
 
-def vecht():
-    eventsmanager.end_game_bad("Je rent op Henk af en begint wild te slaan. Je was alleen vergeten dat Henk Basic gaat. Henk slaat je K.O. met één stomp.")
+def klim():
+    """Hiermee klim je op dehethek"""
+    if gamechangers["opened_hek"] == False:
+        utils.slow_type("Met beide armen pak je het hek stevig vast en zet je af met je been. Je voelt direct een scherpe pijn door je scheenbeen en valt neer. Dit gaat niet lukken zo.")
+    else:
+        print("Waarom typ je dit in? Het hek is al open...")
 
-def spring():
-    eventsmanager.end_game_bad("Je neemt een kleine aanloop en springt van de klif af. Je mikt op een boom maar mist volledig en valt op je nek. Je stierf een pijnloze dood (je was direct verlamd geraakt).")
+def die(reason: str):
+    """Commandos die leiden tot spelerdood"""
+    eventsmanager.end_game_bad(reason)
 
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
@@ -335,7 +340,6 @@ def prepare_start():
     start.setNorth(get_location("klif"))
     register_item(start, "parachute", True)
     register_item(start, "zuurstoftank", True)
-    #start.addItem(Item(name="zuurstoftank", description="Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar.", usable=True))
     for item in start.items:
         itemname = item.getName()
         register_command(start, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -384,7 +388,7 @@ def prepare_dehethek():
     """Dit voert alle voorbereidende opdrachten uit voor de dehet hek locatie"""
     dehethek = get_location("dehethek")
     dehethek.setNorth(get_location("bostopzuid"))
-    # register_command(dehethek) command om t hek op te klimmen  
+    register_command(dehethek, "klim", lambda: klim(), ["climb"]) 
 
 def prepare_appiebos():
     """Dit voert alle voorbereidende opdrachten uit voor de appiebos locatie"""
@@ -392,8 +396,6 @@ def prepare_appiebos():
     appiebos.setWest(get_location("dehethek"))
     register_item(appiebos, "mobiel", True)
     register_item(appiebos, "tas", True)
-    #appiebos.addItem(Item(name="mobiel", description="In het gras zie je iets oplichten en hoor je een bekend getril. Een mobiel.", held_description="Een mobiel. Het scherm is gebarsten.", usable=True))
-    #appiebos.addItem(Item(name="tas", description="aan de tak van een boom iets blauws. Het is een Albert Heijn tasje.", held_description="Een AH tasje. Hij is nog in perfecte staat.", usable=True))
     for item in appiebos.items:
         itemname = item.getName()
         if itemname == "tas":
@@ -405,12 +407,14 @@ def prepare_klifsprong():
     """Dit voert alle voorbereidende opdrachten uit voor de klifsprong locatie"""
     klifsprong = get_location("klifsprong")
     klifsprong.setEast(get_location("dehethek"))
-    register_command(klifsprong, "spring", lambda: spring(), ["jump", "ren"])
+    register_command(klifsprong, "spring", lambda: die("Je neemt een kleine aanloop en springt van de klif af. Je mikt op een boom maar mist volledig en valt op je nek. Je stierf een pijnloze dood (je was direct verlamd geraakt)."),\
+         ["jump", "ren"])
 
 def prepare_henk():
     """Dit voert alle voorbereidende opdrachten uit voor de henk locatie"""
     henk = get_location("henk")
-    register_command(henk, 'stomp henk',  lambda: vecht() , ["gebruik vuisten", "use vuisten", "sla henk", "hit henk", "vecht"])
+    register_command(henk, 'stomp henk',  lambda: die("Je rent op Henk af en begint wild te slaan. Je was alleen vergeten dat Henk Basic gaat. Henk slaat je K.O. met één stomp.") , \
+        ["gebruik vuisten", "use vuisten", "sla henk", "hit henk", "vecht"])
 
 def prepare_rekenmachinebos():
     """Dit voert alle voorbereidende opdrachten uit voor de rekenmachinebos locatie"""
