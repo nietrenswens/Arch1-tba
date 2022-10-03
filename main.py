@@ -2,10 +2,12 @@
 Arch 1 Game-project
 Noah El Menyari en Rens Mulder (1G Basecamp)
 """
+from operator import getitem
 import time, sys, random, utils
 from objects.location import Location
 from objects.item import Item
 import eventsmanager
+import gamedata
 
 
 
@@ -36,30 +38,8 @@ gamechangers = {
 # Hier worden componenten zoals locatie's geregistreerd
 def register_locations():
     """Dit registreert de locaties van de game"""
-    register_location("start", "Dit lijkt de top van de berg te zijn. Richting het oosten lijkt er een pad te zijn. Richting het noorden zie je een klif. Het zuiden en westen zijn dichtgegroeid met bomen.")
-    register_location("klif", "Het pad lijkt hier abrupt te stoppen, een klif. Je kijkt naar beneden. Het is te hoog om de grond te zien. Richting het zuiden zie je een plek wat de top van de berg lijkt te zijn")
-    register_location("bostop", "Je loopt een bos in. Het is donker maar iets verderop hoor je een vreemd gehuil....\nJe loopt verder... Het gehuil wordt steeds luider.\nAchter een gigantische steen ligt een gestrande walvis. \
-Walvis: '..... h .. eeel p..... \n...\n..  please ...... make it stop....' Richting het westen zie je een pad dat omhoog loopt. Richting het zuiden zie je een pad het bos in leidt. Richting het oosten zie je de bomen minderen en lijk je een huisje te zien.")
-    register_location("klifhuis", "Iets verderop zie je een kleine chalet staan. 'Dit zou het echt goed doen op AirBnB', denk je bij jezelf. Je opent de deur...\n\
-Er staan geen meubels in de chalet. Richting het westen kan je terug lopen.")
-    register_location("bostopzuid", "Je loopt verder naar beneden door het bos. Je wordt omringd door de groene natuur en voelt de rust zich over je lichaam wassen...\
-\nIneens voel je iets scherps om je been klemmen... 'AUAAAA' schreeuw je uit. Wanneer je naar beneden kijkt zie je dat je volop in een berenval bent gestapt.\
-\n...Gelukkig heb je dit een keer op Discovery Channel gezien... Je drukt met beide handen de veren aan de zijkant van de berenval omlaag.\
-\nDe berenval opent en je haalt voorzichtig je been er uit... Je bloedt echter flink. Je voelt je lichtjes in je hoofd. Richting het zuiden zie je een pad dat dieper het bos in leidt. Richting het noorden zie je een pad wat naar een minderbegroeid deel van het bos lijkt te gaan.")
-    register_location("dehethek", "Verder het bos in staat voor je ineens een enorm hek. Aan de opening hangt een slot. Je kan alleen terug richting het noorden, tenzij het hek open kan.")
-    register_location("appiebos", "Dieper in het bos is het nogal donker. Het lijkt hier dood te lopen. Je kan alleen richting het westen terug.")
-    register_location("klifsprong", "Iets verderop kom je weer bij een klif uit... Het lijkt erop dat dit de enige weg van de berg af is. Richting het oosten zie je de poort.")
-    register_location("henk", "Pas wanneer je met beide benen op de grond staat kijk je op en zie je een heel bekend gezicht... HENK...\
-\nIneens herinner je je alles. 'Jij was het.... door jou zit ik hier al dagen vast... Jij hebt mij uit het vliegtuig geduwd.\
-\n'Ik kan het uitle-', Henk kan zijn zin niet afmaken. Je rent op hem af klaar om te vechten.")
-    register_location("rekenmachinebos", "Overal waar je heen gaat lijkt alleen maar naar meer bos te leiden. Ook dit lijkt weer op een dood einde.")
-    register_location("tovenaar", "Je loopt verder naar beneden... Het lijkt erop dat je met dit pad eindelijk de berg afkomt.\
-\nJe stopt abrupt met lopen, maar dit gaat tegen je wil in. Het voelt plots alsof er blokken ijzer aan je beide benen hangen.\
-\nJe kijkt omhoog en ziet een schimmig silhouette staan. Het silhouette komt dichterbij en langzamerhand zie je het gezicht van de man.\
-\nHij heeft een lange punthoed op en een overduidelijk neppe baard op zijn gezicht gelijmd...\
-\n'Ik ben de almachtige tovenaar van de berg en niemand verlaat deze berg zonder mijn raadsel op te lossen' schreeuwt hij. \nDit zou best intimiderend zijn als hij geen nepbaard op had.\
-\n'Om langs mij te komen moet je een eeuwenoud raadsel oplossen, maar enkele zielen hebben dit raadsel kunnen beantwoorden. Ik geef je 1 kans. \nHet raadsel luidt als volgt...\
-\n..........    2  +  2  =  ?")
+    for name, desc in gamedata.locdesc_dict.items():
+        register_location(name, desc)
 
 def register_command(location, name, function, aliases=[]):
     """Dit registreert een commando voor een locatie"""
@@ -88,6 +68,10 @@ def register_events():
 def register_location(name: str, description: str):
     """Dit registreert een locatie"""
     locations.append(Location(name, description))  
+
+def register_item(loc: location, itemname: str, usable=False):
+    """Dit registreert een item met bijbehorende beschrijvingen"""
+    loc.addItem(Item(name=itemname, description=gamedata.getItemDesc(itemname), held_description=gamedata.getHeldDesc(itemname), usable=usable))
 
 def removeCommand(name: str):
     """Dit verwijdert een commando"""
@@ -160,7 +144,7 @@ def gebruik(item: Item):
                 gamechangers["killed_walvis"] = True
                 location.setDescription("De walvis ligt er nog... Je voelt je er niet heel goed bij en kijkt weg. Richting het westen zie je een pad dat omhoog loopt. Richting het zuiden zie je een pad het bos in leidt. Richting het oosten zie je de bomen minderen en lijk je een huisje te zien.")
                 inventory.remove(item)
-                location.addItem(Item(name="sleutel", description="In de borstkas van de walvis glimt iets... Het lijkt op een sleutel.", held_description="Een sleutel. Er zit nog wat bloed op.", usable=True))
+                register_item(location, "sleutel", True)
                 utils.slow_type(location.getItem("sleutel").getDescription())
                 register_command(location, 'pak sleutel', "pak('sleutel')", ["p sleutel", "pick up sleutel", "pick up key"])
                 removeCommand("gebruik " + item.getName())
@@ -205,10 +189,6 @@ def gebruik(item: Item):
                 utils.slow_type("Henk is best breed dus je gebruikt de steen als wapen. Je gooit de steen met chirurgische preciesie op zijn slaap. Henk valt neer.\
 \nVoordat het leven Henks lichaam verlaat mompelt hij zijn laatste woorden...               \n'J..e...... moeder.......'\nYOU DEFEATED HENK.")
                 inventory.remove(item)
-                for item in inventory:
-                    if item.getName() == "vuisten":
-                        inventory.remove(item)
-                        removeCommand("gebruik " + item.getName())
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
                 location.setNorth(get_location("rekenmachinebos"))
@@ -218,11 +198,6 @@ def gebruik(item: Item):
                 print("Je wrijft met de steen over je wond. Het doet pijn. Wat had je verwacht?")
             else:
                 print("Je kan dit item hier niet gebruiken.")
-        elif item.getName() == "vuisten":
-            if location.getName() == "henk":
-                eventsmanager.end_game_bad("Je rent op Henk af en begint wild te slaan. Je was alleen vergeten dat Henk Basic gaat. Henk slaat je K.O. met één stomp.")
-            else:
-                print("Je kan je vuisten hier niet gebruiken.")
         elif item.getName() == "rekenmachine":
             if location.getName() == "tovenaar":
                 utils.slow_type("Je haalt je rekenmachine tevoorschijn. De tovenaar schrikt. Met beide handen pak je hem vast en tik je 2 + 2 in....\
@@ -358,8 +333,9 @@ def prepare_start():
     start = get_location("start")
     start.setEast(get_location("bostop"))
     start.setNorth(get_location("klif"))
-    start.addItem(Item(name="parachute", description="Een parachute. Hij ziet er hevig beschadigd uit. Zal hij nog werken?", usable=True))
-    start.addItem(Item(name="zuurstoftank", description="Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar.", usable=True))
+    register_item(start, "parachute", True)
+    register_item(start, "zuurstoftank", True)
+    #start.addItem(Item(name="zuurstoftank", description="Een zuurstoftank met ongeveer 50% capaciteit. De tank is duidelijk al over de datum, maar ziet er nog steeds goed uit, en is nog steeds bruikbaar.", usable=True))
     for item in start.items:
         itemname = item.getName()
         register_command(start, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -368,8 +344,8 @@ def prepare_klif():
     """Dit voert alle voorbereidende opdrachten uit voor de klif locatie"""
     klif = get_location("klif")
     klif.setSouth(get_location("start"))
-    klif.addItem(Item(name="steen", description="Een glimmende steen. Hij doet je denken aan je kindertijd.", usable=True))
-    klif.addItem(Item(name="vis", description="Een grote vis. De vis laat je hongerig voelen, maar hij flopt al de klif af voordat je hem kan pakken."))
+    register_item(klif, "steen", True)
+    register_item(klif, "vis")
     register_command(klif, 'pak ' + "steen", "pak('" + "steen" + "')", ["p " + "steen", "pick up " + "steen"])
 
 def prepare_bostop():
@@ -378,8 +354,8 @@ def prepare_bostop():
     bostop.setWest(get_location("start"))
     bostop.setEast(get_location("klifhuis"))
     bostop.setSouth(get_location("bostopzuid"))
-    bostop.addItem(Item(name="tak", description="Een grote scherpe tak naast de walvis...", held_description="Een tak. Hij is erg zwaar.", usable=True))
-    bostop.addItem(Item(name="spons", description="uit een boomstronk spons steken.", held_description="Een natte spons. Hij is erg zwaar en nat. Waarom heb je hem opgepakt?", usable=True))
+    register_item(bostop, "tak", True)
+    register_item(bostop, "spons", True)
     for item in bostop.items:
         itemname = item.getName()
         register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -389,8 +365,7 @@ def prepare_klifhuis():
     """Dit voert alle voorbereidende opdrachten uit voor de klifhuis locatie"""
     klifhuis = get_location("klifhuis")
     klifhuis.setWest(get_location("bostop"))
-    klifhuis.addItem(Item(name="jonko", description="Naast het raampje zie je een dikke jonko liggen naast een verroestte Zippo aansteker.", held_description="Een jonko. Hij is niet insi gedraaid...", usable=True))
-
+    register_item(klifhuis, "jonko", True)
     for item in klifhuis.items:
         itemname = item.getName()
         register_command(klifhuis, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -400,7 +375,7 @@ def prepare_bostopzuid():
     bostopzuid = get_location("bostopzuid")
     bostopzuid.setNorth(get_location("bostop"))
     bostopzuid.setSouth(get_location("dehethek"))
-    bostopzuid.addItem(Item(name="bacardi", description="Uit de grond steekt een fles met een rode dop. Het is een fles Bacardi Lemon.", held_description="Bacardi Lemon. Het label is vervaagd.", usable=True))
+    register_item(bostopzuid, "bacardi", True)
     for item in bostopzuid.items:
         itemname = item.getName()
         register_command(bostopzuid, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -411,14 +386,14 @@ def prepare_dehethek():
     dehethek.setNorth(get_location("bostopzuid"))
     # register_command(dehethek) command om t hek op te klimmen  
 
-
-
 def prepare_appiebos():
     """Dit voert alle voorbereidende opdrachten uit voor de appiebos locatie"""
     appiebos = get_location("appiebos")
     appiebos.setWest(get_location("dehethek"))
-    appiebos.addItem(Item(name="mobiel", description="In het gras zie je iets oplichten en hoor je een bekend getril. Een mobiel.", held_description="Een mobiel. Het scherm is gebarsten.", usable=True))
-    appiebos.addItem(Item(name="tas", description="aan de tak van een boom iets blauws. Het is een Albert Heijn tasje.", held_description="Een AH tasje. Hij is nog in perfecte staat.", usable=True))
+    register_item(appiebos, "mobiel", True)
+    register_item(appiebos, "tas", True)
+    #appiebos.addItem(Item(name="mobiel", description="In het gras zie je iets oplichten en hoor je een bekend getril. Een mobiel.", held_description="Een mobiel. Het scherm is gebarsten.", usable=True))
+    #appiebos.addItem(Item(name="tas", description="aan de tak van een boom iets blauws. Het is een Albert Heijn tasje.", held_description="Een AH tasje. Hij is nog in perfecte staat.", usable=True))
     for item in appiebos.items:
         itemname = item.getName()
         if itemname == "tas":
@@ -440,7 +415,7 @@ def prepare_henk():
 def prepare_rekenmachinebos():
     """Dit voert alle voorbereidende opdrachten uit voor de rekenmachinebos locatie"""
     rekenmachinebos = get_location("rekenmachinebos")
-    rekenmachinebos.addItem(Item(name="rekenmachine", description="Naast een boom zie je een muis met een GR zitten.", held_description="Een grafische rekenmachine. Hij werkt nog. Het schermpje is moeilijk leesbaar.", usable=True))
+    register_item(rekenmachinebos, "rekenmachine", True)
     for item in rekenmachinebos.items:
         itemname = item.getName()
         if itemname == 'rekenmachine':
