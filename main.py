@@ -211,7 +211,6 @@ def gebruik(item: Item):
                         removeCommand("gebruik " + item.getName())
                 removeCommand("gebruik " + item.getName())
                 removeCommand("onderzoek " + item.getName())
-                # location.setDescription("Henks lichaam lijkt in het niets te zijn verdwenen...")
                 location.setNorth(get_location("rekenmachinebos"))
                 location.setSouth(get_location("tovenaar"))
                 location.setDescription("Op de grond zie je Henk liggen. Hij lijkt best wel dood. Was geweld wel echt de oplossing? (Ja, ja dat was het) Richting het zuiden zie je een open grasvlakte waar je iemand lijkt te zien. Richting het noorden zie je meer bomen. Richting het oosten zie je de hoge klif waar je van af was gesprongen.")
@@ -255,6 +254,11 @@ def reken():
     else:
         eventsmanager.end_game_bad("Tovenaar: 'Serieus? Ik had beter van je verwacht. Nu moet ik je ziel hier voor eeuwig vasthouden enzo en daar had ik eigenlijk helemaal geen zin in.'")
 
+def vecht():
+    eventsmanager.end_game_bad("Je rent op Henk af en begint wild te slaan. Je was alleen vergeten dat Henk Basic gaat. Henk slaat je K.O. met één stomp.")
+
+def spring():
+    eventsmanager.end_game_bad("Je neemt een kleine aanloop en springt van de klif af. Je mikt op een boom maar mist volledig en valt op je nek. Je stierf een pijnloze dood (je was direct verlamd geraakt).")
 
 def check_inventory():
     """Dit checkt of de speler een item in zijn inventory heeft"""
@@ -375,7 +379,7 @@ def prepare_bostop():
     bostop.setEast(get_location("klifhuis"))
     bostop.setSouth(get_location("bostopzuid"))
     bostop.addItem(Item(name="tak", description="Een grote scherpe tak naast de walvis...", held_description="Een tak. Hij is erg zwaar.", usable=True))
-    bostop.addItem(Item(name="spons", description="Uit een boomstronk steekt een spons.", held_description="Een natte spons. Hij is erg zwaar en nat. Waarom heb je hem opgepakt?", usable=True))
+    bostop.addItem(Item(name="spons", description="uit een boomstronk spons steken.", held_description="Een natte spons. Hij is erg zwaar en nat. Waarom heb je hem opgepakt?", usable=True))
     for item in bostop.items:
         itemname = item.getName()
         register_command(bostop, 'pak ' + itemname, "pak('" + itemname + "')", ["p " + item.getName(), "pick up " + item.getName()])
@@ -426,14 +430,12 @@ def prepare_klifsprong():
     """Dit voert alle voorbereidende opdrachten uit voor de klifsprong locatie"""
     klifsprong = get_location("klifsprong")
     klifsprong.setEast(get_location("dehethek"))
-
+    register_command(klifsprong, "spring", lambda: spring(), ["jump", "ren"])
 
 def prepare_henk():
     """Dit voert alle voorbereidende opdrachten uit voor de henk locatie"""
     henk = get_location("henk")
-    #vuistitem = Item(name="vuisten", description="Blote vuisten.", usable=True) dit s fout
-    #inventory.append(vuistitem)
-    #register_command(henk, 'gebruik vuisten',  lambda: gebruik(vuistitem), ["g vuisten", "use vuisten", "sla henk", "hit henk", "g vuist", "use vuist"])
+    register_command(henk, 'stomp henk',  lambda: vecht() , ["gebruik vuisten", "use vuisten", "sla henk", "hit henk", "vecht"])
 
 def prepare_rekenmachinebos():
     """Dit voert alle voorbereidende opdrachten uit voor de rekenmachinebos locatie"""
